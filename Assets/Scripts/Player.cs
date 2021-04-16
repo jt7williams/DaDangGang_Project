@@ -1,3 +1,6 @@
+// Tandy Dang
+// UCR CS179N Spring 2021
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,9 +19,9 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         float range = 10;
         if(Physics.Raycast(this.transform.position, heading.forward, out hit, range)) {
-            Debug.Log("Raycast()");
+            //Debug.Log("Raycast()");
             if(hit.transform.gameObject.tag == "Structure") {
-                Debug.Log("Structure");
+                //Debug.Log("Structure");
             }
         }
     }
