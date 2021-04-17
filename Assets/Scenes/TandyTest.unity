@@ -1122,7 +1122,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6200
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 1.02e-43, y: 1.8704492e+34, z: 4.5904e-41, w: 0}
+  m_BoundingSphereOverride: {x: 1.02e-43, y: 3.4386483e+25, z: 4.5905e-41, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -1494,6 +1494,7 @@ MonoBehaviour:
   body: {fileID: 1946827439}
   movement: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0}
+  timer: 0
 --- !u!4 &804233239
 Transform:
   m_ObjectHideFlags: 0
@@ -1713,7 +1714,7 @@ GameObject:
   - component: {fileID: 988168585}
   m_Layer: 0
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
