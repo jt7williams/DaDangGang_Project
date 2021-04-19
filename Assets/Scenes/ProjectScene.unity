@@ -1179,13 +1179,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659615090}
-  m_LocalRotation: {x: 0.9829836, y: -0.03937478, z: 0.049869485, w: 0.17235424}
+  m_LocalRotation: {x: 0.9870689, y: -0.034864083, z: 0.021617861, w: 0.15495877}
   m_LocalPosition: {x: -35.48, y: 6.8, z: 1.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 20.046, y: -185.159, z: -176.325}
+  m_LocalEulerAnglesHint: {x: 17.904, y: -181.919, z: -176.257}
 --- !u!1 &665423899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2585,7 +2585,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!154 &1510733818
 TerrainCollider:
