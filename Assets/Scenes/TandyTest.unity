@@ -703,6 +703,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8844759585902561750, guid: c934b455e90708a4e93b5a02779ce632, type: 3}
   m_PrefabInstance: {fileID: 374061239}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &376715414 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 804233237, guid: f4c9671a03fa0ad48afd78e3f007b3ec, type: 3}
+  m_PrefabInstance: {fileID: 1998649409527140779}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &386480905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3929650344775515119, guid: 14f2766e188cc23459aaad2fc444b4e3, type: 3}
@@ -1006,7 +1011,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6200
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 4.5905e-41, y: 3.1461992e+29, z: 4.5905e-41, w: 9.403955e-38}
+  m_BoundingSphereOverride: {x: 6.6e-44, y: 5.297e-42, z: 1.02e-43, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -3272,6 +3277,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 804233237, guid: f4c9671a03fa0ad48afd78e3f007b3ec, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 1998649409076163004, guid: f4c9671a03fa0ad48afd78e3f007b3ec, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -3316,6 +3325,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1998649409076163005, guid: f4c9671a03fa0ad48afd78e3f007b3ec, type: 3}
+      propertyPath: rigidbody
+      value: 
+      objectReference: {fileID: 376715414}
     - target: {fileID: 1998649409076163007, guid: f4c9671a03fa0ad48afd78e3f007b3ec, type: 3}
       propertyPath: m_Name
       value: Player
