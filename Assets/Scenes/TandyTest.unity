@@ -1011,7 +1011,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6200
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 6.6e-44, y: 5.297e-42, z: 1.02e-43, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: -58.655914}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -3146,6 +3146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heading: {fileID: 2127884395}
   inventory: {fileID: 0}
+  preview: {fileID: 0}
 --- !u!4 &2002210184 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 501937623347319150, guid: 3e2e4a1eddcaef048859e7f4f222377a, type: 3}
@@ -3279,7 +3280,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 804233237, guid: f4c9671a03fa0ad48afd78e3f007b3ec, type: 3}
       propertyPath: m_Constraints
-      value: 80
+      value: 112
       objectReference: {fileID: 0}
     - target: {fileID: 1998649409076163004, guid: f4c9671a03fa0ad48afd78e3f007b3ec, type: 3}
       propertyPath: m_RootOrder

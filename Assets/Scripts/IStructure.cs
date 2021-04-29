@@ -5,21 +5,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Structure : MonoBehaviour
-{
+public abstract class IStructure : MonoBehaviour {
+    public GameObject preview;
+
     public int health;
     public enum Type { None, Block }
     public Type type;
 
-    void Start()
-    {
+    void Start() {
         this.type = Type.None;
         //this.tag = "Structure";
     }
 
-
-    void Update()
-    {
+    void Update() {
         
     }
+
+    public abstract void Place();
+    public abstract void Remove();
 }

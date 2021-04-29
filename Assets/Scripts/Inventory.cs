@@ -7,18 +7,18 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public List<Structure> structureList;
+    public List<IStructure> structureList;
 
     void Start()
     {
-        structureList = new List<Structure>();
+        structureList = new List<IStructure>();
     }
 
-    void Add(Structure structure) {
+    void Add(IStructure structure) {
         this.structureList.Add(structure);
     }
 
-    void Remove(Structure structure) {
+    void Remove(IStructure structure) {
         this.structureList.Remove(structure);
     }
 }
