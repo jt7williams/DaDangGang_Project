@@ -13,10 +13,13 @@ public class PCPlayerController : MonoBehaviour
     public Vector3 rotation;
 
     public float timer;
+    float oldX;
 
     void Start(){
         rotation = Vector3.zero;
         timer = 0;
+        
+        oldX = 0;
     }
 
     // Update is called once per frame
@@ -40,27 +43,23 @@ public class PCPlayerController : MonoBehaviour
         movement.y = 0;
         this.transform.position += movement;
 
-        // Rotation
-        Vector3 cameraDirection = this.camera.transform.rotation.eulerAngles;
-        this.body.transform.rotation = Quaternion.Euler(new Vector3(0, cameraDirection.y, cameraDirection.z)); // Body rotation
+        // Body Rotation
+        this.body.transform.eulerAngles += new Vector3(0, rotation.y, 0); // turn left/right
 
-        float deadzone = 5;
-        if (cameraDirection.x > 270 && cameraDirection.x < 270 + deadzone) { // upper pitch between 360 and 270 degrees, deadzone the last portion
-            //Debug.Log("Upper");
-            if(rotation.x < 0) { // camera trying to pitch up
-                //Debug.Log("pitching up");
-                rotation.x = 0;
-            }
+        // Camera Rotation
+        Vector3 cameraDirection = this.camera.transform.rotation.eulerAngles;
+        float cameraRotationX = cameraDirection.x + rotation.x; // Camera rotation
+
+        float deadzone = 5; // deadzone is 5 degrees
+        if((cameraRotationX > 270 + deadzone && cameraRotationX < 360) || (cameraRotationX > 0 && cameraRotationX < 90 - deadzone)) { // in range
+            oldX = cameraRotationX;
         }
-        else if(cameraDirection.x < 90 && cameraDirection.x > 90 - deadzone) { // lower pitch between 0 and 90 degrees, deadzone the last portion
-            //Debug.Log("Lower");
-            if (rotation.x > 0) { // camera trying to pitch down
-                //Debug.Log("pitching down");
-                rotation.x = 0;
-            }
+        if (cameraRotationX < 270 + deadzone && cameraRotationX > 90 - deadzone) { // out of range
+            cameraRotationX = oldX;
         }
-        this.camera.transform.eulerAngles += new Vector3(rotation.x, rotation.y, rotation.z); // Camera rotation
-        //Debug.Log("x: " + rotation.x + " y: " + rotation.y + " z: " + rotation.z);
+        this.camera.transform.eulerAngles = new Vector3(cameraRotationX, this.camera.transform.eulerAngles.y, this.camera.transform.eulerAngles.z);
+        //Debug.Log("cameraRotationX: " + cameraRotationX);
+        Debug.Log("x: " + rotation.x + " y: " + rotation.y + " z: " + rotation.z);
         //Debug.Log("x: " + cameraDirection.x + " y: " + cameraDirection.y + " z: " + cameraDirection.z);
     }
 }
