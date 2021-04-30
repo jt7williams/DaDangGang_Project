@@ -1,3 +1,6 @@
+// Tandy Dang
+// UCR CS179N Spring 2021
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
