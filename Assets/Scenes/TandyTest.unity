@@ -36781,7 +36781,7 @@ MonoBehaviour:
   bulletDrop: 0
   isFiring: 0
   damage: 1
-  fireRate: 2
+  fireRate: 8
   impactForce: 60
   muzzleFlash:
   - {fileID: 198234347240085959}
