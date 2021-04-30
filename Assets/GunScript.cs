@@ -8,8 +8,12 @@ public class GunScript : MonoBehaviour
     public float impactForce = 60f;
 
     public GameObject impactEffect;
+	public GameObject muzzleFlash;
+	public GameObject muzzleLoc;
+	
+	Light muzzle_Flash;
     public Camera fpsCam;
-
+	
     private float nextTTF = 0f;
 
     CursorLockMode lockMode;
@@ -17,6 +21,7 @@ public class GunScript : MonoBehaviour
     void Awake(){
         lockMode = CursorLockMode.Locked;
         Cursor.lockState = lockMode;
+		muzzle_Flash = muzzleFlash.GetComponent<Light> ();
     }
 
     // Update is called once per frame
@@ -32,14 +37,15 @@ public class GunScript : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range)){
             Debug.Log(hit.transform.name);
-
             target tgt = hit.transform.GetComponent<target>();
             if(tgt != null){
                 tgt.damageTake(damage);
             }
 
             GameObject impactObject = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactObject, 1.5f);
+			GameObject Flash = Instantiate(muzzleFlash, muzzleLoc.transform);
+            Destroy(impactObject, 0.2f);
+			Destroy(Flash, 0.05f);
         }
 
         if(hit.rigidbody != null){
