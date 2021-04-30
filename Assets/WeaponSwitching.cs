@@ -4,6 +4,8 @@ public class WeaponSwitching : MonoBehaviour
 {
 
     public int selectedWeapon = 0;
+    //public float switchDelay = 0.5f;
+    //private float nextSwitch;
 
     // Start is called before the first frame update
     void Start()
@@ -43,11 +45,12 @@ public class WeaponSwitching : MonoBehaviour
         }
 
         if (prevSelWep != selectedWeapon){
+            //nextSwitch = Time.time + switchDelay;
             SelectWeapon();
         }
     }
 
-    void SelectWeapon(){
+    public void SelectWeapon(){
         int i = 0;
         foreach (Transform weapon in transform){
             if (i == selectedWeapon)

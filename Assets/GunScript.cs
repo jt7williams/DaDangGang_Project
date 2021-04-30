@@ -6,6 +6,8 @@ using UnityEngine;
 public class GunScript : MonoBehaviour
 {
 
+    //WeaponSwitching switching;
+
     class Bullet
     {
         public float time;
@@ -71,6 +73,11 @@ public class GunScript : MonoBehaviour
         {
             StopFiring();
         }
+        //if (switching.SelectWeapon())
+        //    {
+        //    DestroyBullets();
+        //    }
+
     }
 
     public void StartFiring()
@@ -97,9 +104,12 @@ public class GunScript : MonoBehaviour
         });
     }
 
-    void DestroyBullets()
+    public void DestroyBullets()
     {
-        bullets.RemoveAll(bullet => bullet.time >= maxLifetime);
+        if (bullets != null)
+        {
+            bullets.RemoveAll(bullet => bullet.time >= maxLifetime);
+        }
     }
 
     void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
@@ -124,9 +134,12 @@ public class GunScript : MonoBehaviour
 
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifetime;
-    } else
+        }
+        else
         {
-            bullet.tracer.transform.position = end;
+            if (bullet.tracer != null) { 
+                bullet.tracer.transform.position = end;
+            }   
         }
     }
 

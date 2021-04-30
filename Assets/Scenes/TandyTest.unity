@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 812b9673c6f468642bd23d7311e42e28, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 0da5ba4f00415ec46a91ce52130a52d8, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -20292,7 +20292,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6200
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 1, y: 1, z: 1, w: 1}
+  m_BoundingSphereOverride: {x: 1.02e-43, y: -3.0569484e+28, z: 4.5904e-41, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -36564,11 +36564,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321d1ac3798c6c141822a5e4def91c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeed: 20
-  bulletDrop: 30.2
+  bulletSpeed: 30
+  bulletDrop: 15
   isFiring: 0
   damage: 20
-  fireRate: 25
+  fireRate: 15
   impactForce: 80
   muzzleFlash:
   - {fileID: 198234347240085959}
@@ -36781,7 +36781,7 @@ MonoBehaviour:
   bulletDrop: 0
   isFiring: 0
   damage: 1
-  fireRate: 2
+  fireRate: 8
   impactForce: 60
   muzzleFlash:
   - {fileID: 198234347240085959}
