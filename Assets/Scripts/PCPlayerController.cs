@@ -67,7 +67,7 @@ public class PCPlayerController : MonoBehaviour {
         }
         this.camera.transform.eulerAngles = new Vector3(cameraRotationX, this.camera.transform.eulerAngles.y, this.camera.transform.eulerAngles.z);
         //Debug.Log("cameraRotationX: " + cameraRotationX);
-        Debug.Log("x: " + rotation.x + " y: " + rotation.y + " z: " + rotation.z);
+        //Debug.Log("x: " + rotation.x + " y: " + rotation.y + " z: " + rotation.z);
         //Debug.Log("x: " + cameraDirection.x + " y: " + cameraDirection.y + " z: " + cameraDirection.z);
 
         // Jump
