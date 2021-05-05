@@ -6,7 +6,7 @@ public class DetectSacrifice : MonoBehaviour
 {
     public GameObject firePillar;
     public GameObject fireRing;
-    public string objectTriggerName;
+    public string triggerTag;
     public bool isTriggered;
     // Start is called before the first frame update
     void Start()
@@ -14,7 +14,6 @@ public class DetectSacrifice : MonoBehaviour
         fireRing.SetActive(false);
         firePillar.SetActive(true);
         isTriggered = false;
-        objectTriggerName += " (UnityEngine.GameObject)";
     }
 
     // Update is called once per frame
@@ -25,8 +24,8 @@ public class DetectSacrifice : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.gameObject.ToString());
-        if (!isTriggered && (other.gameObject.ToString() == objectTriggerName))
+        
+        if (!isTriggered && (other.gameObject.tag == triggerTag))
         {
             fireRing.SetActive(true);
             firePillar.SetActive(false);

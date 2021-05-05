@@ -31,6 +31,7 @@ public class SpawnBoss : MonoBehaviour
         {
             if (sigil1.activeSelf && sigil2.activeSelf && sigil3.activeSelf && sigil4.activeSelf && sigil5.activeSelf)
             {
+                fireRing.SetActive(true);
                 var main = fireRing.GetComponent<ParticleSystem>().main;
                 main.startSpeed = 50F;
                 yield return new WaitForSeconds(7);
