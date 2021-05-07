@@ -30,6 +30,7 @@ public class TriggerBarrier : MonoBehaviour
         if (!isTriggered && (other.gameObject.tag == triggerTag))
         {
             isTriggered = true;
+            other.gameObject.SetActive(false);
             fireRing.GetComponent<ParticleSystem>().Play();
             yield return new WaitForSeconds(1);
             firePillar.GetComponent<ParticleSystem>().Play();

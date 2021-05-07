@@ -30,6 +30,7 @@ public class DetectSacrifice : MonoBehaviour
             fireRing.SetActive(true);
             firePillar.SetActive(false);
             isTriggered = true;
+            other.gameObject.SetActive(false);
         }
     }
 }
