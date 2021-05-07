@@ -31346,6 +31346,8 @@ MonoBehaviour:
   damage: 5
   fireRate: 25
   impactForce: 60
+  maxAmmo: 30
+  reloadTime: 1
   muzzleFlash:
   - {fileID: 198234347240085959}
   - {fileID: 198515451543705953}
@@ -36570,6 +36572,8 @@ MonoBehaviour:
   damage: 20
   fireRate: 15
   impactForce: 80
+  maxAmmo: 30
+  reloadTime: 1
   muzzleFlash:
   - {fileID: 198234347240085959}
   - {fileID: 198515451543705953}
@@ -36783,6 +36787,8 @@ MonoBehaviour:
   damage: 1
   fireRate: 8
   impactForce: 60
+  maxAmmo: 30
+  reloadTime: 1
   muzzleFlash:
   - {fileID: 198234347240085959}
   - {fileID: 198515451543705953}

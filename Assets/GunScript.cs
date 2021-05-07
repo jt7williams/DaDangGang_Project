@@ -26,6 +26,10 @@ public class GunScript : MonoBehaviour
     public float damage = 10f;
     public int fireRate = 25;
     public float impactForce = 60f;
+    public int maxAmmo = 30;
+    private int ammoCount;
+    private bool isReloading = false;
+    public float reloadTime = 1.0f;
 
     Ray ray;
     RaycastHit hitInfo;
@@ -61,8 +65,27 @@ public class GunScript : MonoBehaviour
         return bullet;
     }
 
+    void Start()
+    {
+        ammoCount = maxAmmo;
+    }
+
+    void OnEnable()
+    {
+        isReloading = false;
+    }
+
     void Update()
     {
+        if (isReloading)
+        {
+            return;
+        }
+        if(Input.GetKeyDown(KeyCode.R) || ammoCount <= 0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
         if (Input.GetButton("Fire1") && Time.time > nextTTF)
         {
             nextTTF = Time.time + 1f / fireRate;
@@ -73,11 +96,18 @@ public class GunScript : MonoBehaviour
         {
             StopFiring();
         }
-        //if (switching.SelectWeapon())
-        //    {
-        //    DestroyBullets();
-        //    }
 
+    }
+
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        yield return new WaitForSeconds(reloadTime - .25f);
+
+        yield return new WaitForSeconds(.25f);
+
+        ammoCount = maxAmmo;
+        isReloading = false;
     }
 
     public void StartFiring()
@@ -143,17 +173,6 @@ public class GunScript : MonoBehaviour
         }
     }
 
-    //public void UpdateFiring(float deltaTime)
-    //{
-    //    nextTTF += deltaTime;
-    //    float fireInterval = 1f / fireRate;
-    //    while (nextTTF >= 0.0f)
-    //    {
-    //        fireBullet();
-    //        nextTTF -= fireInterval;
-    //    }
-    //}
-
     public void StopFiring()
     {
         isFiring = false;
@@ -161,6 +180,8 @@ public class GunScript : MonoBehaviour
 
     private void fireBullet()
     {
+        
+        ammoCount--;
         foreach (var particle in muzzleFlash)
         {
             particle.Emit(1);
