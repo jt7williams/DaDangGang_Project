@@ -6,33 +6,33 @@ public class RespawnKey : MonoBehaviour
 {
     public GameObject key;
     public Transform spawnPoint;
-    public float respawnTime;
-    private float timeStayingStill;
+    //public float respawnTime;
+    //private float timeStayingStill;
+    
 
 
     // Start is called before the first frame update
     void Start()
     {
-        timeStayingStill = 0F;
+        
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if ((key.GetComponent<Rigidbody>().velocity).magnitude < 0.01F)
-        {
-            timeStayingStill += Time.deltaTime;
-            if (timeStayingStill > respawnTime)
-            {
-                key.transform.position = spawnPoint.position;
-            }
-        }
-        else
-        {
-            timeStayingStill = 0;
-        }
+        
 
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "Terrain")
+        {
+            //Debug.Log(other.gameObject.name);
+            key.transform.position = spawnPoint.position;
+            key.transform.rotation = spawnPoint.rotation;
+            key.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
     }
 }

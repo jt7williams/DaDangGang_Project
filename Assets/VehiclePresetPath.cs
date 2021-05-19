@@ -31,7 +31,7 @@ public class VehiclePresetPath : MonoBehaviour
             }
             vehicle.transform.position = vehicle.transform.position + (speed * Time.deltaTime) * travelDir;
 
-            if ((vehicle.transform.position - waypoints[currWaypoint].transform.position).magnitude < 0.5F)
+            if ((vehicle.transform.position - waypoints[currWaypoint].transform.position).normalized == travelDir)
             {
                 currWaypoint += 1;
                 newWayPoint = true;
