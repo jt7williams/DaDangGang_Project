@@ -6,16 +6,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    public PCPlayerController pcCtrl;
+    //public PCPlayerController pcCtrl;
+    public Transform cameraTransform;
     public Transform heading;
     public Inventory inventory;
 
     public IStructure selection;
     public GameObject preview;
+    public Material previewMaterial;
+    public Vector3 target;
+    public bool rightClick;
 
     void Start() {
         //camera = GetComponent<Camera>();
         //inventory = new Inventory();
+        target = Vector3.zero;
     }
 
     void Update() {
@@ -23,48 +28,72 @@ public class Player : MonoBehaviour {
             selection = inventory.structures[0];
             //Instantiate(selection, this.transform.position, Quaternion.identity);
         }
+        //Preview(selection, target);
+
+        rightClick = Input.GetMouseButtonDown(1);
     }
 
     void FixedUpdate() {
-        Vector3 target = Vector3.zero;
         RaycastHit hit;
         float range = 10;
+        float cameraOffset = 2f;
+        float previewOffset = 0.5f;
+        target = cameraTransform.position + cameraTransform.forward * cameraOffset;
+        ///*
+        bool placeValid = false;
         if(Physics.Raycast(this.transform.position, heading.forward, out hit, range)) {
             //Debug.Log("Raycast()");
-            if(hit.transform.gameObject.tag == "Structure") {
-                //Debug.Log("Raycast(): Structure");
-                // can Place() or Remove()
-                target = hit.point + hit.normal;
-                Preview(selection, target);
+            if(hit.transform.gameObject.tag == "Structure") { // can Remove()
+              //Debug.Log("Raycast(): Structure");
+                target = hit.point + hit.normal * previewOffset;
+                placeValid = true;
             }
-            else if(hit.transform.gameObject.tag == "Terrain") {
+            else if(hit.transform.gameObject.tag == "Terrain") { // can Place() or Remove()
                 //Debug.Log("Raycast(): Terrain");
-                // can Place()
-                target = hit.point + hit.normal;
-                Preview(selection, target);
+                target = hit.point + hit.normal * previewOffset;
+                placeValid = true;
             }
-            else if(hit.transform.gameObject.tag == "Vehicle") {
+            else if(hit.transform.gameObject.tag == "Vehicle") { // can Place() or Remove()
                 //Debug.Log("Raycast(): Vehicle()");
-                // can Place()
-                target = hit.point + hit.normal;
-                Preview(selection, target);
+                target = hit.point + hit.normal * previewOffset;
+                placeValid = true;
             }
         }
         else {
-            target = pcCtrl.camera.transform.position + pcCtrl.camera.transform.forward * 2;
-            Preview(selection, target);
+            target =  cameraTransform.position + cameraTransform.forward * cameraOffset; //pcCtrl.camera.transform.position + pcCtrl.camera.transform.forward * 2;
         }
+        //*/
+
+        if(rightClick && preview && placeValid) { // Place Structure
+            selection.Place(target);
+            selection = null;
+            Destroy(preview);
+        }
+
+        Preview(selection, target, placeValid);
     }
 
-    void Preview(IStructure structure, Vector3 position) {
-        Debug.Log("Preview()");
-        if(!preview && selection) {
+    void Preview(IStructure structure, Vector3 position, bool placeValid) {
+        //Debug.Log("Preview()");
+        if(!preview && structure) {
+            Debug.Log("!preview");
             preview = Instantiate(structure.preview, position, Quaternion.identity);
+            previewMaterial = preview.GetComponent<MeshRenderer>().material;
             //preview.transform.LookAt(pcCtrl.camera.transform);
         }
-        else if(preview && selection) {
+        else if(preview && structure) {
+            Debug.Log("p&s");
             preview.transform.position = position;
             //preview.transform.LookAt(pcCtrl.camera.transform);
+
+            if(placeValid) {
+                //Debug.Log("g");
+                previewMaterial.color = Color.green;
+            }
+            else {
+                //Debug.Log("r");
+                previewMaterial.color = Color.red;
+            }
         }
     }
 }

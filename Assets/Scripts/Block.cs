@@ -12,8 +12,9 @@ public class Block : IStructure {
         
     }
 
-    public override void Place() {
-
+    public override void Place(Vector3 position) {
+        //Debug.Log("Place()");
+        Instantiate(this.gameObject, position, Quaternion.identity);
     }
 
     public override void Remove() {
