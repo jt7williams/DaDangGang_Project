@@ -7,41 +7,46 @@ using UnityEngine;
 
 public class PCPlayerController : MonoBehaviour
 {
-    public new Camera camera;
+    public Camera mainCamera;
     public GameObject body;
     public Vector3 movement;
     public Vector3 rotation;
 
-    public float timer;
+    public Transform player;
+    GunScript weapon;
 
-    void Start(){
+	public float timer;
+	
+    void Start()
+    {
         rotation = Vector3.zero;
-        timer = 0;
+		timer = 0;
+        weapon = GetComponentInChildren<GunScript>();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
     void Update(){
-        if(timer > 1) {
-            movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * 0.1f;
-            rotation = new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0) * 3;
-        }
+        movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * 0.1f;
+        rotation = new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0) * 3;
+        
     }
 
     private void FixedUpdate(){
-        if(timer < 1) {
+		if(timer < 1) {
             timer += Time.fixedDeltaTime;
         }
-
-        Debug.DrawLine(this.transform.position, this.transform.position + this.camera.transform.forward * 3, Color.magenta);
+        Debug.DrawLine(this.transform.position, this.transform.position + this.mainCamera.transform.forward * 3, Color.magenta);
         Debug.DrawLine(this.body.transform.position, this.body.transform.position + this.body.transform.forward * 3, Color.yellow);
 
-        // Movement
-        movement = this.camera.transform.TransformDirection(movement);
+        Vector3 cameraDirection = this.mainCamera.transform.rotation.eulerAngles;
+        this.body.transform.rotation = Quaternion.Euler(new Vector3(0, cameraDirection.y, cameraDirection.z));
+
+        movement = this.mainCamera.transform.TransformDirection(movement);
         movement.y = 0;
         this.transform.position += movement;
 
-        // Rotation
-        Vector3 cameraDirection = this.camera.transform.rotation.eulerAngles;
+        this.mainCamera.transform.eulerAngles += rotation;
         this.body.transform.rotation = Quaternion.Euler(new Vector3(0, cameraDirection.y, cameraDirection.z)); // Body rotation
 
         float deadzone = 5;
@@ -59,8 +64,24 @@ public class PCPlayerController : MonoBehaviour
                 rotation.x = 0;
             }
         }
-        this.camera.transform.eulerAngles += new Vector3(rotation.x, rotation.y, rotation.z); // Camera rotation
-        //Debug.Log("x: " + rotation.x + " y: " + rotation.y + " z: " + rotation.z);
-        //Debug.Log("x: " + cameraDirection.x + " y: " + cameraDirection.y + " z: " + cameraDirection.z);
+        this.mainCamera.transform.eulerAngles += new Vector3(rotation.x, rotation.y, rotation.z); // Camera rotation
     }
+
+
+    //private void LateUpdate()
+    //{
+    //    if (Input.GetButton("Fire1"))
+    //    {
+    //        weapon.StartFiring();
+    //    }
+    //    if (weapon.isFiring)
+    //    {
+    //        weapon.UpdateFiring(Time.deltaTime);
+    //    }
+    //    weapon.UpdateBullets(Time.deltaTime);
+    //    if (Input.GetButtonUp("Fire1"))
+    //    {
+    //        weapon.StopFiring();
+    //    }
+    //}
 }

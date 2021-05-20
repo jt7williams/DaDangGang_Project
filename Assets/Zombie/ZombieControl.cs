@@ -15,6 +15,14 @@ public class ZombieControl : MonoBehaviour
 	public float moveRange, meleeRange;
 	public bool playerIsVisible, playerIsTarget;
 	
+	//ragdolllll
+	public List<Collider> RagdollParts = new List<Collider>();
+	
+	//limb essentials
+	public GameObject head;
+	bool isDead = false;
+	public GameObject mainTarget;
+	
 	//animations
 	public GameObject Rig;
 	[SerializeField] Animator movementControl;
@@ -44,12 +52,8 @@ public class ZombieControl : MonoBehaviour
 	
 	private void Spawn()
 	{
-		player = GameObject.Find("Player").transform;
 		agent = GetComponent<NavMeshAgent>();
-		//play spawn animation
-		//set initial head rotation
 		initialRot = torso.transform.rotation;
-		
 	}
 	
 	private void Update()
@@ -57,33 +61,43 @@ public class ZombieControl : MonoBehaviour
 		playerIsVisible = Physics.CheckSphere(transform.position, moveRange, isPlayer);
 		playerIsTarget = Physics.CheckSphere(transform.position, meleeRange, isPlayer);
 		
-		
 		movementControl =  Rig.GetComponent<Animator>();
 		
-		if (!playerIsVisible && !playerIsTarget)
+		if ((head == null))// || (mainTarget.GetComponent<zombieHealth>().mainhealth <= 0))
 		{
-			Patrol();
-			TorsoLook();
+			//ragdolllll
+			if (isDead == false)
+			{
+				isDead = true;
+				movementControl.enabled = false;
+				this.gameObject.GetComponent<ZombieControl>().enabled = false;
+				//Destroy(this, 20.0f);
+			}
 		}
-		if (playerIsVisible && !playerIsTarget)
+		
+		if (isDead == false)
 		{
-			Pursue();
-			TorsoLook();
-
-			movementControl.SetFloat("speed", Random.Range(0.7f, 1.3f));
-			movementControl.SetFloat("attack", 0.0f);
-		}
-		if (playerIsVisible && playerIsTarget)
-		{
-			Attack();
-			TorsoLook();
-			Debug.Log("attack");
-			movementControl.SetFloat("speed", Random.Range(0.8f, 1.4f));
-			movementControl.SetFloat("attack", 2.0f);
+			if (!playerIsVisible && !playerIsTarget)
+			{
+				Patrol();
+			}
+			if (playerIsVisible && !playerIsTarget)
+			{
+				Pursue();
+				movementControl.SetFloat("speed", Random.Range(0.7f, 1.3f));
+				movementControl.SetFloat("attack", 0.0f);
+			}
+			if (playerIsVisible && playerIsTarget)
+			{
+				Attack();
+				//Debug.Log("attack");
+				//TorsoLook();
+				movementControl.SetFloat("speed", Random.Range(0.8f, 1.4f));
+				movementControl.SetFloat("attack", 2.0f);
+			}
 		}
 		
 	}
-	
 	
 	private void Patrol()
 	{
@@ -119,28 +133,21 @@ public class ZombieControl : MonoBehaviour
 	
 	private void Pursue()
 	{
-		//play lookat animation upper torso
 		attackMode = true;
 		agent.SetDestination(player.position);
-		//Debug.Log(player.position);
 	}
 	
 	private void BeginAttack()
 	{
 		agent.SetDestination(transform.position);
-		//yield return new WaitForSeconds(1);
-		//play attackstart animation
 		Attack();
-		TorsoLook();
 		
 	}
 	
 	
 	private void Attack()
 	{
-		//player = GameObject.Find("Player").transform;
 		agent.SetDestination(player.position);
-
 		//play animation
 		if (!hasAttacked)
 		{
@@ -156,9 +163,8 @@ public class ZombieControl : MonoBehaviour
 	
 	private void TorsoLook()
 	{
-		player = GameObject.Find("Player").transform;
-		Quaternion lookRot = Quaternion.LookRotation(player.position - torso.transform.position);
-		torso.transform.rotation = lookRot;
+		//Quaternion lookRot = Quaternion.LookRotation(player.position - torso.transform.position);
+		//torso.transform.rotation = lookRot;
 	}
 	
 }

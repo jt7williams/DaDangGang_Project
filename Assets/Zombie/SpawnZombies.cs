@@ -19,8 +19,9 @@ public class SpawnZombies : MonoBehaviour
 
 	IEnumerator SpawnZombie()
 	{
-		while (zombieCount <= 20) 
+		while (zombieCount <= 10)
 		{
+			yield return new WaitForSeconds(Random.Range(0.2f, 0.6f));
 			xPos = Random.Range(1, 10);
 			zPos = Random.Range(1, 10);
 			Instantiate(Zombie, new Vector3(Player.transform.position.x + xPos, 1, Player.transform.position.z + zPos), Quaternion.identity);
@@ -32,6 +33,6 @@ public class SpawnZombies : MonoBehaviour
 	
     void Update()
     {
-        
+		
     }
 }
