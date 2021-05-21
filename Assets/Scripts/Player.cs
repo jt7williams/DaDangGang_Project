@@ -32,13 +32,13 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
-        if(Input.GetKeyDown(KeyCode.Alpha1)) {
+        if(Input.GetKeyDown(KeyCode.Alpha4)) {
             selection = inventory.structures[0];
             //Instantiate(selection, this.transform.position, Quaternion.identity);
         }
         //Preview(selection, target);
 
-        leftClick = Input.GetMouseButtonDown(0);
+        leftClick = Input.GetMouseButtonDown(2); // TODO: rename to middleClick
         rightClick = Input.GetMouseButtonDown(1);
     }
 
