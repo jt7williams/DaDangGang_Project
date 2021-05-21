@@ -186,7 +186,7 @@ public class OVRManifestPreprocessor
                 OVRDeviceSelector.isTargetDeviceQuestFamily,
                 true,
                 "version", "1",
-                "required", "true");
+                "required", OVRProjectConfig.GetProjectConfig().allowOptional3DofHeadTracking ? "false" : "true");
 
             // If Quest is the target device, add the handtracking manifest tags if needed
             // Mapping of project setting to manifest setting:
@@ -211,6 +211,16 @@ public class OVRManifestPreprocessor
                 "com.oculus.permission.HAND_TRACKING",
                 handTrackingEntryNeeded,
                 modifyIfFound);
+
+            // Add hand tracking frequency meta data tag
+            AddOrRemoveTag(doc,
+                androidNamepsaceURI,
+                "/manifest/application",
+                "meta-data",
+                "com.oculus.handtracking.frequency",
+                handTrackingEntryNeeded,
+                modifyIfFound,
+                "value", projectConfig.handTrackingFrequency.ToString());
 
 
             // Add focus aware tag if this app is targeting Quest Family
@@ -262,6 +272,19 @@ public class OVRManifestPreprocessor
                 projectConfig.focusAware && projectConfig.requiresSystemKeyboard,
                 modifyIfFound,
                 "required", "false");
+
+            // Add use system splash screen tag
+            if (projectConfig.systemSplashScreen != null)
+            {
+                AddOrRemoveTag(doc,
+                    androidNamepsaceURI,
+                    "/manifest/application",
+                    "meta-data",
+                    "com.oculus.ossplash",
+                    true,
+                    modifyIfFound,
+                    "value", "true");
+            }
 
             // make sure the VR Mode tag is set in the manifest
             AddOrRemoveTag(doc,

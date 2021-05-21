@@ -222,6 +222,13 @@ namespace Oculus.Platform
       /// Application that the group leader has proposed for a CAL launch.
       Notification_Cal_ProposeApplication = 0x2E7451F5,
 
+      /// Sent when the user has chosen to leave the destination/lobby/match from the
+      /// Oculus menu. Read the specific fields to check the user is currently from
+      /// the destination/lobby/match and take the appropriate actions to remove
+      /// them. Update the user's presence clearing the appropriate fields to
+      /// indicate the user has left.
+      Notification_GroupPresence_LeaveIntentReceived = 0x4737EA1D,
+
       /// Sent to indicate that more data has been read or an error occured.
       Notification_HTTP_Transfer = 0x7DD46E2F,
 
@@ -276,6 +283,10 @@ namespace Oculus.Platform
       /// Indicates that the current room has been updated. Use Message.GetRoom() to
       /// extract the updated room.
       Notification_Room_RoomUpdate = 0x60EC3C2F,
+
+      /// Sent when the user is finished using the invite panel to send out
+      /// invitations. Contains a list of invitees.
+      Notification_Session_InvitationsSent = 0x07F9C880,
 
       /// Sent when another user is attempting to establish a VoIP connection. Use
       /// Message.GetNetworkingPeer() to extract information about the user, and
@@ -345,9 +356,12 @@ namespace Oculus.Platform
     public virtual CloudStorageUpdateResponse GetCloudStorageUpdateResponse() { return null; }
     public virtual Dictionary<string, string> GetDataStore() { return null; }
     public virtual DestinationList GetDestinationList() { return null; }
+    public virtual GroupPresenceLeaveIntent GetGroupPresenceLeaveIntent() { return null; }
     public virtual InstalledApplicationList GetInstalledApplicationList() { return null; }
+    public virtual InvitePanelResultInfo GetInvitePanelResultInfo() { return null; }
     public virtual LaunchBlockFlowResult GetLaunchBlockFlowResult() { return null; }
     public virtual LaunchFriendRequestFlowResult GetLaunchFriendRequestFlowResult() { return null; }
+    public virtual LaunchInvitePanelFlowResult GetLaunchInvitePanelFlowResult() { return null; }
     public virtual LaunchReportFlowResult GetLaunchReportFlowResult() { return null; }
     public virtual LaunchUnblockFlowResult GetLaunchUnblockFlowResult() { return null; }
     public virtual bool GetLeaderboardDidUpdate() { return false; }
@@ -549,8 +563,16 @@ namespace Oculus.Platform
           message = new Message(messageHandle);
           break;
 
+        case Message.MessageType.Notification_GroupPresence_LeaveIntentReceived:
+          message = new MessageWithGroupPresenceLeaveIntent(messageHandle);
+          break;
+
         case Message.MessageType.User_LaunchFriendRequestFlow:
           message = new MessageWithLaunchFriendRequestFlowResult(messageHandle);
+          break;
+
+        case Message.MessageType.Notification_Session_InvitationsSent:
+          message = new MessageWithLaunchInvitePanelFlowResult(messageHandle);
           break;
 
         case Message.MessageType.Leaderboard_Get:
@@ -1099,6 +1121,18 @@ namespace Oculus.Platform
     }
 
   }
+  public class MessageWithGroupPresenceLeaveIntent : Message<GroupPresenceLeaveIntent>
+  {
+    public MessageWithGroupPresenceLeaveIntent(IntPtr c_message) : base(c_message) { }
+    public override GroupPresenceLeaveIntent GetGroupPresenceLeaveIntent() { return Data; }
+    protected override GroupPresenceLeaveIntent GetDataFromMessage(IntPtr c_message)
+    {
+      var msg = CAPI.ovr_Message_GetNativeMessage(c_message);
+      var obj = CAPI.ovr_Message_GetGroupPresenceLeaveIntent(msg);
+      return new GroupPresenceLeaveIntent(obj);
+    }
+
+  }
   public class MessageWithInstalledApplicationList : Message<InstalledApplicationList>
   {
     public MessageWithInstalledApplicationList(IntPtr c_message) : base(c_message) { }
@@ -1108,6 +1142,18 @@ namespace Oculus.Platform
       var msg = CAPI.ovr_Message_GetNativeMessage(c_message);
       var obj = CAPI.ovr_Message_GetInstalledApplicationArray(msg);
       return new InstalledApplicationList(obj);
+    }
+
+  }
+  public class MessageWithInvitePanelResultInfo : Message<InvitePanelResultInfo>
+  {
+    public MessageWithInvitePanelResultInfo(IntPtr c_message) : base(c_message) { }
+    public override InvitePanelResultInfo GetInvitePanelResultInfo() { return Data; }
+    protected override InvitePanelResultInfo GetDataFromMessage(IntPtr c_message)
+    {
+      var msg = CAPI.ovr_Message_GetNativeMessage(c_message);
+      var obj = CAPI.ovr_Message_GetInvitePanelResultInfo(msg);
+      return new InvitePanelResultInfo(obj);
     }
 
   }
@@ -1132,6 +1178,18 @@ namespace Oculus.Platform
       var msg = CAPI.ovr_Message_GetNativeMessage(c_message);
       var obj = CAPI.ovr_Message_GetLaunchFriendRequestFlowResult(msg);
       return new LaunchFriendRequestFlowResult(obj);
+    }
+
+  }
+  public class MessageWithLaunchInvitePanelFlowResult : Message<LaunchInvitePanelFlowResult>
+  {
+    public MessageWithLaunchInvitePanelFlowResult(IntPtr c_message) : base(c_message) { }
+    public override LaunchInvitePanelFlowResult GetLaunchInvitePanelFlowResult() { return Data; }
+    protected override LaunchInvitePanelFlowResult GetDataFromMessage(IntPtr c_message)
+    {
+      var msg = CAPI.ovr_Message_GetNativeMessage(c_message);
+      var obj = CAPI.ovr_Message_GetLaunchInvitePanelFlowResult(msg);
+      return new LaunchInvitePanelFlowResult(obj);
     }
 
   }
