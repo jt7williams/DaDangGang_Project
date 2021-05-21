@@ -17,7 +17,7 @@ public class Block : IStructure {
         Instantiate(this.gameObject, position, Quaternion.identity);
     }
 
-    public override void Remove() {
-        
+    public override void Remove(IStructure target) {
+        Destroy(target.gameObject);
     }
 }

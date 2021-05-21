@@ -14,13 +14,21 @@ public class Player : MonoBehaviour {
     public IStructure selection;
     public GameObject preview;
     public Material previewMaterial;
-    public Vector3 target;
+    public GameObject target;
+    public Vector3 placement;
+    public GameObject highlighted;
+    public MeshRenderer highlightedMeshRenderer;
+
+    public bool leftClick;
     public bool rightClick;
 
     void Start() {
         //camera = GetComponent<Camera>();
         //inventory = new Inventory();
-        target = Vector3.zero;
+        placement = Vector3.zero;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update() {
@@ -30,47 +38,60 @@ public class Player : MonoBehaviour {
         }
         //Preview(selection, target);
 
+        leftClick = Input.GetMouseButtonDown(0);
         rightClick = Input.GetMouseButtonDown(1);
     }
 
     void FixedUpdate() {
         RaycastHit hit;
         float range = 10;
-        float cameraOffset = 2f;
+        float cameraOffset = 3f;
         float previewOffset = 0.5f;
-        target = cameraTransform.position + cameraTransform.forward * cameraOffset;
-        ///*
+        placement = cameraTransform.position + cameraTransform.forward * cameraOffset;
+        // /*
         bool placeValid = false;
+        bool removeValid = false;
         if(Physics.Raycast(this.transform.position, heading.forward, out hit, range)) {
             //Debug.Log("Raycast()");
-            if(hit.transform.gameObject.tag == "Structure") { // can Remove()
-              //Debug.Log("Raycast(): Structure");
-                target = hit.point + hit.normal * previewOffset;
+            target = hit.transform.gameObject;
+            if(highlighted && target != highlighted) { highlightedMeshRenderer.material.color = Color.gray; } // no longer tracking highlighted GameObject
+
+            if(hit.transform.gameObject.tag == "Structure") { // can Place() or Remove()
+                //Debug.Log("Raycast(): Structure");
+                placement = hit.point + hit.normal * previewOffset;
                 placeValid = true;
+                removeValid = true;
+
+                highlighted = hit.transform.gameObject; // save reference to unhighlight GameObject later
+                highlightedMeshRenderer = highlighted.GetComponent<MeshRenderer>();
+                highlightedMeshRenderer.material.color = Color.yellow; // highlight removable Structure targeted
             }
-            else if(hit.transform.gameObject.tag == "Terrain") { // can Place() or Remove()
+            else if(hit.transform.gameObject.tag == "Terrain") { // can Place()
                 //Debug.Log("Raycast(): Terrain");
-                target = hit.point + hit.normal * previewOffset;
+                placement = hit.point + hit.normal * previewOffset;
                 placeValid = true;
             }
-            else if(hit.transform.gameObject.tag == "Vehicle") { // can Place() or Remove()
+            else if(hit.transform.gameObject.tag == "Vehicle") { // can Place()
                 //Debug.Log("Raycast(): Vehicle()");
-                target = hit.point + hit.normal * previewOffset;
+                placement = hit.point + hit.normal * previewOffset;
                 placeValid = true;
             }
         }
         else {
-            target =  cameraTransform.position + cameraTransform.forward * cameraOffset; //pcCtrl.camera.transform.position + pcCtrl.camera.transform.forward * 2;
+            placement =  cameraTransform.position + cameraTransform.forward * cameraOffset; //pcCtrl.camera.transform.position + pcCtrl.camera.transform.forward * 2;
         }
-        //*/
+        // */
 
-        if(rightClick && preview && placeValid) { // Place Structure
-            selection.Place(target);
-            selection = null;
-            Destroy(preview);
+        if(leftClick && preview && placeValid) { // Place Structure
+            selection.Place(placement);
+            //selection = null;
+            //Destroy(preview);
+        }
+        else if(rightClick && removeValid) { // Remove Structure
+            selection.Remove(target.GetComponent<IStructure>());
         }
 
-        Preview(selection, target, placeValid);
+        Preview(selection, placement, placeValid);
     }
 
     void Preview(IStructure structure, Vector3 position, bool placeValid) {

@@ -22,5 +22,5 @@ public abstract class IStructure : MonoBehaviour {
     }
 
     public abstract void Place(Vector3 position);
-    public abstract void Remove();
+    public abstract void Remove(IStructure target);
 }
