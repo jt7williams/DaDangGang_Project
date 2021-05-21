@@ -5,20 +5,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
-{
-    public List<Structure> structureList;
+[System.Serializable]
+public class Inventory : MonoBehaviour {
+    //public List<IStructure> structureList;// = new List<IStructure>();
+    public List<IStructure> structures;
 
-    void Start()
-    {
-        structureList = new List<Structure>();
+    void Start() {
+        //structureList = new List<IStructure>();
+        
     }
 
-    void Add(Structure structure) {
-        this.structureList.Add(structure);
+    void Add(IStructure structure) {
+        this.structures.Add(structure);
     }
 
-    void Remove(Structure structure) {
-        this.structureList.Remove(structure);
+    void Remove(IStructure structure) {
+        this.structures.Remove(structure);
     }
 }
