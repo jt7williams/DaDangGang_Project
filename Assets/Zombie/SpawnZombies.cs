@@ -19,7 +19,7 @@ public class SpawnZombies : MonoBehaviour
 
 	IEnumerator SpawnZombie()
 	{
-		while (zombieCount <= 10)
+		while (zombieCount <= 2)
 		{
 			yield return new WaitForSeconds(Random.Range(0.2f, 0.6f));
 			xPos = Random.Range(1, 10);
