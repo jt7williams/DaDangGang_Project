@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class CrossHairTarget : MonoBehaviour
 {
-    public GameObject crossHairTransform;
+    Camera MainCamera;
     Ray ray;
     RaycastHit hitInfo;
     void Start()
     {
-
+        MainCamera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        ray.origin = crossHairTransform.transform.position;
-        ray.direction = crossHairTransform.transform.forward;
+        ray.origin = MainCamera.transform.position;
+        ray.direction = MainCamera.transform.forward;
         if (Physics.Raycast(ray, out hitInfo))
         {
             transform.position = hitInfo.point;
