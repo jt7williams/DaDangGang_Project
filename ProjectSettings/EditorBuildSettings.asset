@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TandyTest.unity
-    guid: d1c3109bdb54ad54c8a2b2838528e640
+    path: Assets/Scenes/MainMenu.unity
+    guid: ce6cb5d841b78b74087f39b25f266012
+  - enabled: 1
+    path: Assets/Scenes/ProjectScene.unity
+    guid: b41783412beb15f4eab1c72e6f5b6d00
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: c5143d3ea4954d64b99caf82bb235dce, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e30b332d0714a6244abfd8dfde7b8b25, type: 2}
