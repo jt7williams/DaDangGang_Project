@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Zombie
   - Key
+  - Structure
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Terrain
   - 
   - 
   - 
