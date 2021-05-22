@@ -8,7 +8,6 @@ public class SpawnZombies : MonoBehaviour
 	public GameObject Zombie;
 	public int xPos;
 	public int zPos;
-	public float yPos;
 	
 	public int zombieCount;
 	
@@ -20,13 +19,12 @@ public class SpawnZombies : MonoBehaviour
 
 	IEnumerator SpawnZombie()
 	{
-		while (zombieCount <= 15)
+		while (zombieCount <= 2)
 		{
 			yield return new WaitForSeconds(Random.Range(0.2f, 0.6f));
 			xPos = Random.Range(1, 10);
 			zPos = Random.Range(1, 10);
-			yPos = Player.transform.position.y;
-			Instantiate(Zombie, new Vector3(Player.transform.position.x + xPos, (int)yPos, Player.transform.position.z + zPos), Quaternion.identity);
+			Instantiate(Zombie, new Vector3(Player.transform.position.x + xPos, 1, Player.transform.position.z + zPos), Quaternion.identity);
 
 			zombieCount += 1;
 		}
