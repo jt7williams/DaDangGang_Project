@@ -26,17 +26,13 @@ public class OVRWeapnSwitch : MonoBehaviour
             switch (iterate)
             {
                 case 0:
-                    /*LHandProp.GetComponent<Collider>().enabled = false;
-                    LHandProp.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
-                    Lhand.SetActive(true);
-                    _m4.SetActive(false);
-                    _Skorpion.SetActive(false);
-                    _ak.SetActive(false);*/
+                    //do Nothing here
+
                     break;
                 case 1:
                     //Code for switching to the M4 WEAPON!
                     LHandProp.GetComponent<Collider>().enabled = true;
-                    LHandProp.transform.localPosition = new Vector3(0.025f, -0.02f, 0.418f);
+                    LHandProp.transform.localPosition = new Vector3(0.025f, -0.02f, 0.51f);
                     LHandProp.transform.localRotation = Quaternion.Euler(new Vector3(-18.943f, -27.731f, -86.269f));
                     _m4.SetActive(true);
                     _Skorpion.SetActive(false);

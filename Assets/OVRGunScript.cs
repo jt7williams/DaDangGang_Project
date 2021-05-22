@@ -47,7 +47,10 @@ public class OVRGunScript : MonoBehaviour
     public OVRInput.Button fireTrigger;
     public OVRInput.Button reload;
     public GameObject LHandProp;
-    public AudioSource WeaponFireSound;
+
+    public AudioSource FireSound;
+    public AudioSource ShellSound;
+    public AudioSource ReloadSound;
 
 
 
@@ -88,6 +91,7 @@ public class OVRGunScript : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R) || ammoCount <= 0)
         {
+            ReloadSound.PlayOneShot(ReloadSound.GetComponent<AudioSource>().clip, 0.5f);
             StartCoroutine(Reload());
             return;
         }
@@ -95,15 +99,17 @@ public class OVRGunScript : MonoBehaviour
         if (OVRInput.Get(fireTrigger) && Time.time > nextTTF && TwoHandsFiring && LHandProp.transform.GetChild(0).GetChild(0).gameObject.activeSelf)
         {
             nextTTF = Time.time + 1f / fireRate;
-            WeaponFireSound.Play();
+            FireSound.PlayOneShot(FireSound.GetComponent<AudioSource>().clip,0.8f);
             StartFiring();
-            Debug.Log("INSIDE\n");
+            ShellSound.PlayOneShot(ShellSound.GetComponent<AudioSource>().clip, 0.4f);
+   
         }
         else if(OVRInput.Get(fireTrigger) && Time.time > nextTTF && !TwoHandsFiring) {
+
             nextTTF = Time.time + 1f / fireRate;
-            WeaponFireSound.Play();
+            FireSound.PlayOneShot(FireSound.GetComponent<AudioSource>().clip, 0.8f);
             StartFiring();
-            Debug.Log("INSIDE\n");
+            ShellSound.PlayOneShot(ShellSound.GetComponent<AudioSource>().clip, 0.4f);
         }
         UpdateBullets(Time.deltaTime);
         if (Input.GetButtonUp("Fire1"))
