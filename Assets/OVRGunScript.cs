@@ -42,10 +42,12 @@ public class OVRGunScript : MonoBehaviour
     private float nextTTF = 0.0f;
     public float maxLifetime = 3.0f;
 
-    //OVR BUTTONS & hand prop
+    //OVR BUTTONS & hand prop & Sound 
+    public bool TwoHandsFiring;
     public OVRInput.Button fireTrigger;
     public OVRInput.Button reload;
     public GameObject LHandProp;
+    public AudioSource WeaponFireSound;
 
 
 
@@ -89,9 +91,17 @@ public class OVRGunScript : MonoBehaviour
             StartCoroutine(Reload());
             return;
         }
-        if (OVRInput.Get(fireTrigger) && Time.time > nextTTF)
+
+        if (OVRInput.Get(fireTrigger) && Time.time > nextTTF && TwoHandsFiring && LHandProp.transform.GetChild(0).GetChild(0).gameObject.activeSelf)
         {
             nextTTF = Time.time + 1f / fireRate;
+            WeaponFireSound.Play();
+            StartFiring();
+            Debug.Log("INSIDE\n");
+        }
+        else if(OVRInput.Get(fireTrigger) && Time.time > nextTTF && !TwoHandsFiring) {
+            nextTTF = Time.time + 1f / fireRate;
+            WeaponFireSound.Play();
             StartFiring();
             Debug.Log("INSIDE\n");
         }
