@@ -14,7 +14,13 @@ public class OVRWeapnSwitch : MonoBehaviour
     int iterate = 0;
     void Start()
     {
-        
+        LHandProp.GetComponent<Collider>().enabled = false;
+        LHandProp.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+        Lhand.SetActive(true);
+        _m4.SetActive(false);
+        _Skorpion.SetActive(false);
+        _ak.SetActive(false);
+
     }
 
     // Update is called once per frame
