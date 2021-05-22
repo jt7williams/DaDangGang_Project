@@ -17,6 +17,7 @@ public class ZombieControl : MonoBehaviour
 	
 	//ragdolllll
 	public List<Collider> RagdollParts = new List<Collider>();
+	Rigidbody[] rigids;
 	
 	//limb essentials
 	public GameObject head;
@@ -48,15 +49,17 @@ public class ZombieControl : MonoBehaviour
     void Start()
     {
 		attackMode = false;
+		Spawn();
     }
 	
 	private void Spawn()
 	{
 		agent = GetComponent<NavMeshAgent>();
 		initialRot = torso.transform.rotation;
+		TurnOffRagdoll();
 	}
 	
-	private void Update()
+	private void FixedUpdate()
 	{
 		playerIsVisible = Physics.CheckSphere(transform.position, moveRange, isPlayer);
 		playerIsTarget = Physics.CheckSphere(transform.position, meleeRange, isPlayer);
@@ -70,20 +73,29 @@ public class ZombieControl : MonoBehaviour
 			{
 				isDead = true;
 				movementControl.enabled = false;
-				this.gameObject.GetComponent<ZombieControl>().enabled = false;
-				//Destroy(this, 20.0f);
+				ActivateRagdoll();
+				//kill momentum here
+				
+				Destroy(this.gameObject, 10.0f);
 			}
 		}
 		
 		if (isDead == false)
 		{
+			
 			if (!playerIsVisible && !playerIsTarget)
 			{
+				//Debug.Log("not moving");
+				agent.speed = 3.0f;
+				movementControl.SetFloat("speed", Random.Range(0.3f, 0.5f));
 				Patrol();
 			}
 			if (playerIsVisible && !playerIsTarget)
 			{
 				Pursue();
+				//Debug.Log("moving");
+				//TorsoLook();
+				agent.speed = 4.5f;
 				movementControl.SetFloat("speed", Random.Range(0.7f, 1.3f));
 				movementControl.SetFloat("attack", 0.0f);
 			}
@@ -92,7 +104,8 @@ public class ZombieControl : MonoBehaviour
 				Attack();
 				//Debug.Log("attack");
 				//TorsoLook();
-				movementControl.SetFloat("speed", Random.Range(0.8f, 1.4f));
+				agent.speed = 6.0f;
+				movementControl.SetFloat("speed", Random.Range(1.1f, 1.45f));
 				movementControl.SetFloat("attack", 2.0f);
 			}
 		}
@@ -107,7 +120,7 @@ public class ZombieControl : MonoBehaviour
 		}
 		else if(!attackMode)
 		{
-			//agent.SetDestination(walkTo);
+			agent.SetDestination(walkTo);
 		}
 		
 		Vector3 targetDistance = transform.position - walkTo;
@@ -139,7 +152,7 @@ public class ZombieControl : MonoBehaviour
 	
 	private void BeginAttack()
 	{
-		agent.SetDestination(transform.position);
+		//agent.SetDestination(transform.position);
 		Attack();
 		
 	}
@@ -147,7 +160,7 @@ public class ZombieControl : MonoBehaviour
 	
 	private void Attack()
 	{
-		agent.SetDestination(player.position);
+		//agent.SetDestination(player.position);
 		//play animation
 		if (!hasAttacked)
 		{
@@ -163,8 +176,54 @@ public class ZombieControl : MonoBehaviour
 	
 	private void TorsoLook()
 	{
-		//Quaternion lookRot = Quaternion.LookRotation(player.position - torso.transform.position);
-		//torso.transform.rotation = lookRot;
+		Quaternion lookRot = Quaternion.LookRotation(player.position - torso.transform.position);
+		torso.transform.rotation = lookRot;
+	}
+	
+	private void TurnOffRagdoll()
+	{
+		//rigids = GetComponentsInChildren<Rigidbody>();
+		//CapsuleCollider[] cols = GetComponentsInChildren<CapsuleCollider>();
+		
+		
+		foreach (Collider c in RagdollParts)
+		{
+			c.isTrigger = true;
+			//c.attachedRigidbody.Sleep();
+			//c.attachedRigidbody.detectCollisions = false;
+		}
+		
+		/*
+		foreach (Rigidbody r in rigids)
+		{
+			r.Sleep();
+			//r.isKinematic = true;
+		}
+		*/
+		
+	}
+	
+	private void ActivateRagdoll()
+	{
+		
+		//CapsuleCollider[] cols = GetComponentsInChildren<CapsuleCollider>();
+		
+		
+		foreach (Collider c in RagdollParts)
+		{
+			c.isTrigger = false;
+			//c.attachedRigidbody.WakeUp();
+			//c.attachedRigidbody.detectCollisions = true;
+		}
+		
+		/*
+		foreach (Rigidbody r in rigids)
+		{
+			r.WakeUp();
+			//r.isKinematic = true;
+		}
+		*/
+
 	}
 	
 }
