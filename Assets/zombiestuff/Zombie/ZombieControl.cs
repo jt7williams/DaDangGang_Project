@@ -61,6 +61,10 @@ public class ZombieControl : MonoBehaviour
         {
             player = kbmCam;
         }
+		else 
+		{
+			player = kbmCam;
+		}
         Spawn();
     }
 	
@@ -77,8 +81,17 @@ public class ZombieControl : MonoBehaviour
 		playerIsTarget = Physics.CheckSphere(transform.position, meleeRange, isPlayer);
 		
 		movementControl =  Rig.GetComponent<Animator>();
-		
-		if ((head == null))// || (mainTarget.GetComponent<zombieHealth>().mainhealth <= 0))
+		if (mainTarget.GetComponent<zombieHealth>().mainhealth <= 0)
+		{
+			if (isDead == false)
+			{
+				isDead = true;
+				movementControl.enabled = false;
+				ActivateRagdoll();
+				Destroy(this.gameObject, 10.0f);
+			}
+		}
+		if ((head == null))// || 
 		{
 			//ragdolllll
 			if (isDead == false)
@@ -87,7 +100,6 @@ public class ZombieControl : MonoBehaviour
 				movementControl.enabled = false;
 				ActivateRagdoll();
 				//kill momentum here
-				
 				Destroy(this.gameObject, 10.0f);
 			}
 		}
@@ -164,7 +176,6 @@ public class ZombieControl : MonoBehaviour
 	
 	private void BeginAttack()
 	{
-		//agent.SetDestination(transform.position);
 		Attack();
 		
 	}
@@ -172,8 +183,6 @@ public class ZombieControl : MonoBehaviour
 	
 	private void Attack()
 	{
-		//agent.SetDestination(player.position);
-		//play animation
 		if (!hasAttacked)
 		{
 			hasAttacked = true;
@@ -194,32 +203,15 @@ public class ZombieControl : MonoBehaviour
 	
 	private void TurnOffRagdoll()
 	{
-		//rigids = GetComponentsInChildren<Rigidbody>();
-		//CapsuleCollider[] cols = GetComponentsInChildren<CapsuleCollider>();
-		
-		
 		foreach (Collider c in RagdollParts)
 		{
-			c.isTrigger = true;
-			//c.attachedRigidbody.Sleep();
-			//c.attachedRigidbody.detectCollisions = false;
+			//c.isTrigger = true;
 		}
-		
-		/*
-		foreach (Rigidbody r in rigids)
-		{
-			r.Sleep();
-			//r.isKinematic = true;
-		}
-		*/
-		
 	}
 	
 	private void ActivateRagdoll()
 	{
-		
 		//CapsuleCollider[] cols = GetComponentsInChildren<CapsuleCollider>();
-		
 		
 		foreach (Collider c in RagdollParts)
 		{
