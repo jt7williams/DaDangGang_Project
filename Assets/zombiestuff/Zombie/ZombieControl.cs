@@ -8,8 +8,12 @@ public class ZombieControl : MonoBehaviour
 {
 	
 	public NavMeshAgent agent;
-	public Transform player;
-	public LayerMask isGround, isPlayer;
+	private Transform player;
+
+    public Transform vrCam;
+    public Transform kbmCam;
+
+    public LayerMask isGround, isPlayer;
 	
 	//states
 	public float moveRange, meleeRange;
@@ -49,7 +53,15 @@ public class ZombieControl : MonoBehaviour
     void Start()
     {
 		attackMode = false;
-		Spawn();
+        if (StateNameController.camNumber == 1)
+        {
+            player = vrCam;
+        }
+        else if (StateNameController.camNumber == 2)
+        {
+            player = kbmCam;
+        }
+        Spawn();
     }
 	
 	private void Spawn()
