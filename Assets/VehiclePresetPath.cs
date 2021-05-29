@@ -29,7 +29,8 @@ public class VehiclePresetPath : MonoBehaviour
                 vehicle.transform.LookAt(waypoints[currWaypoint].transform);
                 newWayPoint = false;
             }
-            vehicle.transform.position = vehicle.transform.position + (speed * Time.deltaTime) * travelDir;
+            //vehicle.transform.position = vehicle.transform.position + (speed * Time.deltaTime) * travelDir;
+			vehicle.rigidbody.moveto(vehicle.transform.position + (speed * Time.deltaTime) * travelDir);
 
             if ((vehicle.transform.position - waypoints[currWaypoint].transform.position).normalized == travelDir)
             {
