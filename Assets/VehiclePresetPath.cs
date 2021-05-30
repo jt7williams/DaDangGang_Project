@@ -13,9 +13,10 @@ public class VehiclePresetPath : MonoBehaviour
     private Vector3 vector2d = new Vector3(1f, 0f, 1f);
     private Vector3 StraightPath;
 
-    public Vector3 rotationSpeed = new Vector3(0, .1f, 0);
+    //public Vector3 rotationSpeed = new Vector3(0, .1f, 0);
 
-
+    public WheelCollider[] wheels;
+    public float turnSpeed = 30;
 
     // Start is called before the first frame update
     void Start()
@@ -28,9 +29,14 @@ public class VehiclePresetPath : MonoBehaviour
 
         currWaypoint = 0;
 
-        speed = 10f;
+        //speed = 10f;
 
         rb = GetComponent<Rigidbody>();
+        for (int i = 0; i < 4; ++i)
+        {
+            wheels[i].brakeTorque = 5000F * 0.1F;
+
+        }
     }
 
     void Update() { 
@@ -51,35 +57,43 @@ public class VehiclePresetPath : MonoBehaviour
 
         Vector3 PositionOffset = new Vector3(StraightPath.x, 0f, StraightPath.z);
 
+
         if (distance < 5f)
         {
-
+            /*
             if (transform.rotation.y < wpts.transform.rotation.y - .01f )
             {
-                Quaternion deltaRotation = Quaternion.Euler(wpts.transform.rotation.y * rotationSpeed * 1f);
+                Quaternion deltaRotation = Quaternion.Euler(wpts.transform.rotation.y * rotationSpeed * 1f * Time.fixedDeltaTime);
                 rb.MoveRotation(rb.transform.rotation * deltaRotation);
             }
-            if (transform.rotation.y < wpts.transform.rotation.y + 0.1f)
+            if (transform.rotation.y > wpts.transform.rotation.y + 0.01f)
             {
-                Quaternion deltaRotation = Quaternion.Euler(wpts.transform.rotation.y * rotationSpeed * -1f);
+                Quaternion deltaRotation = Quaternion.Euler(wpts.transform.rotation.y * rotationSpeed * -1f *Time.fixedDeltaTime);
                 rb.MoveRotation(rb.transform.rotation * deltaRotation);
-            }
+            }*/
+            
+            rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, wpts.transform.rotation, turnSpeed * Time.fixedDeltaTime));
             
         }
         else
         {
             if (currWaypoint > 0)
             {
+                /*
                 if (transform.rotation.y < waypoints[currWaypoint - 1].transform.rotation.y - .01f)
                 {
-                    Quaternion deltaRotation = Quaternion.Euler(waypoints[currWaypoint - 1].transform.rotation.y * rotationSpeed * 1f);
+                    Quaternion deltaRotation = Quaternion.Euler(waypoints[currWaypoint - 1].transform.rotation.y * rotationSpeed * 1f * Time.fixedDeltaTime);
                     rb.MoveRotation(rb.transform.rotation * deltaRotation);
                 }
                 else if (transform.rotation.y > waypoints[currWaypoint - 1].transform.rotation.y + .01f)
                     {
-                        Quaternion deltaRotation = Quaternion.Euler(waypoints[currWaypoint - 1].transform.rotation.y * rotationSpeed * -1f);
+                        Quaternion deltaRotation = Quaternion.Euler(waypoints[currWaypoint - 1].transform.rotation.y * rotationSpeed * -1f * Time.fixedDeltaTime);
                         rb.MoveRotation(rb.transform.rotation * deltaRotation);
                     }
+                    */
+                
+                rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, waypoints[currWaypoint - 1].transform.rotation, turnSpeed * Time.fixedDeltaTime));
+                
             }
 
         }
@@ -91,15 +105,16 @@ public class VehiclePresetPath : MonoBehaviour
         if (distance > 5f)
         {
 
-            rb.MovePosition(rb.transform.position + PositionOffset.normalized * speed * Time.deltaTime );
-
+            rb.MovePosition(rb.transform.position + PositionOffset.normalized * speed * Time.fixedDeltaTime );
+            
+            
 
         }
         else
         {
             currWaypoint++;
 
-
+            
         }
        
      }
