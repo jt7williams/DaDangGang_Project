@@ -13,10 +13,9 @@ public class VehiclePresetPath : MonoBehaviour
     private Vector3 vector2d = new Vector3(1f, 0f, 1f);
     private Vector3 StraightPath;
 
-    //public Vector3 rotationSpeed = new Vector3(0, .1f, 0);
 
     public WheelCollider[] wheels;
-    public float turnSpeed = 30;
+    private float turnSpeed = 30;
 
     // Start is called before the first frame update
     void Start()
@@ -24,10 +23,13 @@ public class VehiclePresetPath : MonoBehaviour
         //Alighn the game objecst so they look at the next;
         for (int cnt = 0; cnt < waypoints.Length - 1; cnt++)
         {
-            waypoints[cnt].transform.LookAt(waypoints[cnt+1].transform.position);
-        }
+            Vector3 pos = waypoints[cnt].transform.position;
+            waypoints[cnt].transform.LookAt(waypoints[cnt + 1].transform.position);
+            pos.y = Terrain.activeTerrain.SampleHeight(waypoints[cnt].transform.position) + 3.8f;
+            waypoints[cnt].transform.position = pos;
 
-        currWaypoint = 0;
+        }
+            currWaypoint = 0;
 
         //speed = 10f;
 
@@ -45,8 +47,12 @@ public class VehiclePresetPath : MonoBehaviour
 
         
     }
-    void FixedUpdate() {
-        MoveVehicle(waypoints[currWaypoint]);
+    void FixedUpdate()
+    {
+        turnSpeed = 6 * speed;
+        if (currWaypoint < waypoints.Length) {
+            MoveVehicle(waypoints[currWaypoint]);
+        }
 
     }
 
@@ -60,39 +66,21 @@ public class VehiclePresetPath : MonoBehaviour
 
         if (distance < 5f)
         {
-            /*
-            if (transform.rotation.y < wpts.transform.rotation.y - .01f )
-            {
-                Quaternion deltaRotation = Quaternion.Euler(wpts.transform.rotation.y * rotationSpeed * 1f * Time.fixedDeltaTime);
-                rb.MoveRotation(rb.transform.rotation * deltaRotation);
+            
+            if ((transform.rotation.y < wpts.transform.rotation.y - .01f) || (transform.rotation.y > wpts.transform.rotation.y + 0.01f)) {
+                rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, wpts.transform.rotation, turnSpeed * Time.fixedDeltaTime));
             }
-            if (transform.rotation.y > wpts.transform.rotation.y + 0.01f)
-            {
-                Quaternion deltaRotation = Quaternion.Euler(wpts.transform.rotation.y * rotationSpeed * -1f *Time.fixedDeltaTime);
-                rb.MoveRotation(rb.transform.rotation * deltaRotation);
-            }*/
-            
-            rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, wpts.transform.rotation, turnSpeed * Time.fixedDeltaTime));
-            
+
         }
         else
         {
             if (currWaypoint > 0)
             {
-                /*
-                if (transform.rotation.y < waypoints[currWaypoint - 1].transform.rotation.y - .01f)
+         
+                if ((transform.rotation.y < waypoints[currWaypoint - 1].transform.rotation.y - .01f) || (transform.rotation.y > waypoints[currWaypoint - 1].transform.rotation.y + .01f))
                 {
-                    Quaternion deltaRotation = Quaternion.Euler(waypoints[currWaypoint - 1].transform.rotation.y * rotationSpeed * 1f * Time.fixedDeltaTime);
-                    rb.MoveRotation(rb.transform.rotation * deltaRotation);
+                    rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, waypoints[currWaypoint - 1].transform.rotation, turnSpeed * Time.fixedDeltaTime));
                 }
-                else if (transform.rotation.y > waypoints[currWaypoint - 1].transform.rotation.y + .01f)
-                    {
-                        Quaternion deltaRotation = Quaternion.Euler(waypoints[currWaypoint - 1].transform.rotation.y * rotationSpeed * -1f * Time.fixedDeltaTime);
-                        rb.MoveRotation(rb.transform.rotation * deltaRotation);
-                    }
-                    */
-                
-                rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, waypoints[currWaypoint - 1].transform.rotation, turnSpeed * Time.fixedDeltaTime));
                 
             }
 
