@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class VehicleMove : MonoBehaviour
 {
-	public rigidBody tankBody;
-	public transform target;
+	//public rigidBody tankBody;
+	//public transform target;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +16,6 @@ public class VehicleMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        tankBody.MoveTowards(target.transform);
+       // tankBody.MoveTowards(target.transform);
     }
 }
