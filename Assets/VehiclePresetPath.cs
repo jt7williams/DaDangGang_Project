@@ -6,12 +6,17 @@ public class VehiclePresetPath : MonoBehaviour
 {
     public GameObject[] waypoints;
     public GameObject vehicle;
-    public float speed;
+    public float VehicleSpeed;
+    private float speed;
     //public float deltaRotation;
     private int currWaypoint;
     private Rigidbody rb;
     private Vector3 vector2d = new Vector3(1f, 0f, 1f);
     private Vector3 StraightPath;
+
+    public AudioSource EngineSound;
+    public AudioSource TankSound;
+    public AudioSource[] TrackSound;
 
 
     public WheelCollider[] wheels;
@@ -36,7 +41,8 @@ public class VehiclePresetPath : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         for (int i = 0; i < 4; ++i)
         {
-            wheels[i].brakeTorque = 5000F * 0.1F;
+          wheels[i].brakeTorque = 5000F * 0.1F;
+
 
         }
     }
@@ -49,10 +55,47 @@ public class VehiclePresetPath : MonoBehaviour
     }
     void FixedUpdate()
     {
-        turnSpeed = 6 * speed;
-        if (currWaypoint < waypoints.Length) {
-            MoveVehicle(waypoints[currWaypoint]);
+        //When the vehicle hits a steep incline then increase the speed by 5f. 
+        if (transform.eulerAngles.x > 300f && transform.eulerAngles.x < 350f)
+        {
+            Debug.Log("increasing speed.\n");
+            speed = VehicleSpeed + 5f;
         }
+        else
+            speed = VehicleSpeed;
+
+        turnSpeed = 6 * speed;
+        if (currWaypoint < waypoints.Length)
+        {
+            MoveVehicle(waypoints[currWaypoint]);
+
+            //We are moving play sounds
+            if (!TankSound.isPlaying)
+            {
+                TankSound.Play();
+                EngineSound.Play();
+
+                TrackSound[0].Play();
+                TrackSound[1].Play();
+                TrackSound[2].Play();
+                TrackSound[3].Play();
+            }
+
+
+        }
+        else {
+
+            TankSound.Pause();
+            EngineSound.Pause();
+
+            TrackSound[0].Pause();
+            TrackSound[1].Pause();
+            TrackSound[2].Pause();
+            TrackSound[3].Pause();
+
+        }
+
+
 
     }
 
@@ -63,7 +106,7 @@ public class VehiclePresetPath : MonoBehaviour
 
         Vector3 PositionOffset = new Vector3(StraightPath.x, 0f, StraightPath.z);
 
-
+        
         if (distance < 5f)
         {
             
@@ -85,6 +128,7 @@ public class VehiclePresetPath : MonoBehaviour
             }
 
         }
+        
 
 
 
@@ -93,7 +137,7 @@ public class VehiclePresetPath : MonoBehaviour
         if (distance > 5f)
         {
 
-            rb.MovePosition(rb.transform.position + PositionOffset.normalized * speed * Time.fixedDeltaTime );
+            rb.MovePosition(rb.transform.position + PositionOffset.normalized * speed * Time.fixedDeltaTime);
             
             
 
