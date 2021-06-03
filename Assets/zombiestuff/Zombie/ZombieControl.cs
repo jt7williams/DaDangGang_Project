@@ -9,6 +9,13 @@ public class ZombieControl : MonoBehaviour
 	
 	public NavMeshAgent agent;
 	private Transform player;
+    //playerstats object to affect player health
+    public playerStats target;
+
+    [SerializeField] float damage;
+    float lastAttack = 0;
+    float attackCooldown = 1.5f;
+
 
     public Transform vrCam;
     public Transform kbmCam;
@@ -183,10 +190,13 @@ public class ZombieControl : MonoBehaviour
 	
 	private void Attack()
 	{
-		if (!hasAttacked)
+		if (!hasAttacked && Time.time - lastAttack >= attackCooldown)
 		{
 			hasAttacked = true;
+            lastAttack = Time.time;
 			Invoke(nameof(EndAttack), attackDebounce);
+            target.takePlayerDMG(5f);
+            
 		}
 	}
 	

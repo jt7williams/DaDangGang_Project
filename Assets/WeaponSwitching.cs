@@ -4,6 +4,7 @@ public class WeaponSwitching : MonoBehaviour
 {
 
     public int selectedWeapon = 0;
+    public gameController gameCon;
     //public float switchDelay = 0.5f;
     //private float nextSwitch;
 
@@ -54,9 +55,14 @@ public class WeaponSwitching : MonoBehaviour
         int i = 0;
         foreach (Transform weapon in transform){
             if (i == selectedWeapon)
+            {
                 weapon.gameObject.SetActive(true);
+                gameCon.updateAmmoCount(weapon.GetComponent<GunScript>().ammoCount);
+            }
             else
+            {
                 weapon.gameObject.SetActive(false);
+            }
             i++;
         }
     }

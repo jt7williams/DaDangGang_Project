@@ -27,8 +27,8 @@ public class GunScript : MonoBehaviour
     public int fireRate = 25;
     public float impactForce = 60f;
     public int maxAmmo = 30;
-    private int ammoCount;
-    private bool isReloading = false;
+    public int ammoCount;
+    public bool isReloading = false;
     public float reloadTime = 1.0f;
 
     Ray ray;
@@ -44,6 +44,7 @@ public class GunScript : MonoBehaviour
     private float nextTTF = 0.0f;
     public float maxLifetime = 3.0f;
 
+    public gameController gameCon;
     
 
     Vector3 GetPosition(Bullet bullet)
@@ -68,6 +69,7 @@ public class GunScript : MonoBehaviour
     void Start()
     {
         ammoCount = maxAmmo;
+        isFiring = false;
     }
 
     void OnEnable()
@@ -90,8 +92,10 @@ public class GunScript : MonoBehaviour
         {
             nextTTF = Time.time + 1f / fireRate;
             StartFiring();
+            gameCon.updateAmmoCount(ammoCount);
         }
         UpdateBullets(Time.deltaTime);
+        
         if (Input.GetButtonUp("Fire1"))
         {
             StopFiring();
@@ -102,11 +106,13 @@ public class GunScript : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
+        gameCon.reloadText();
         yield return new WaitForSeconds(reloadTime - .25f);
 
         yield return new WaitForSeconds(.25f);
 
         ammoCount = maxAmmo;
+        gameCon.updateAmmoCount(ammoCount);
         isReloading = false;
     }
 
