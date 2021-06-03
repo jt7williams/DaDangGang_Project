@@ -23,7 +23,17 @@ public class OVRPlayerController : MonoBehaviour
 	/// The rate acceleration during movement.
 	/// </summary>
 	public float Acceleration = 0.1f;
+	public GameObject Vehicle;
+	private Vector3 VehiclePreviousLocation;
+	private Quaternion VehiclePreviousRotation;
+	public bool OnVehicle = false;
+	private Rigidbody rb;
 
+
+	/// <summary>
+	/// If on a moving vehicle update the OVRPlayerRotation.
+	/// </summary>
+	public bool OnVehicleUpdateRotation = false;
 	/// <summary>
 	/// The rate of damping on movement.
 	/// </summary>
@@ -161,10 +171,12 @@ public class OVRPlayerController : MonoBehaviour
 
 	void Start()
 	{
+		rb = GetComponent<Rigidbody>();
 		// Add eye-depth as a camera offset from the player controller
 		var p = CameraRig.transform.localPosition;
 		p.z = OVRManager.profile.eyeDepth;
 		CameraRig.transform.localPosition = p;
+		VehiclePreviousLocation = Vehicle.transform.position;
 	}
 
 	void Awake()
@@ -194,24 +206,56 @@ public class OVRPlayerController : MonoBehaviour
 
 	void OnDisable()
 	{
+		
 		if (playerControllerEnabled)
 		{
 			OVRManager.display.RecenteredPose -= ResetOrientation;
 
 			if (CameraRig != null)
 			{
-				CameraRig.UpdatedAnchors -= UpdateTransform;
+				CameraRig.UpdatedAnchors -=  UpdateTransform;
 			}
 			playerControllerEnabled = false;
 		}
 	}
+	void FixedUpdate()
+    {
+		if (OnVehicle) //If on moving vehicle update transform according to vehicle displacement.. 
+		{
+			Vector3 difference = Vehicle.transform.position - VehiclePreviousLocation;
+			float angleDifference = Vehicle.transform.rotation.eulerAngles.y - VehiclePreviousRotation.eulerAngles.y;
 
+			transform.position = transform.position + difference;
+
+			//Updating the moving vehicle change in rotation orientation will cause motion sickness. Can be lessen by decreaseing vehicle rotation speed or increaseing vehicle rotation. 
+			if (OnVehicleUpdateRotation)
+			{
+				transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,transform.localEulerAngles.y + angleDifference, transform.localEulerAngles.z);
+			}
+
+			VehiclePreviousLocation = Vehicle.transform.position;
+			VehiclePreviousRotation = Vehicle.transform.rotation;
+		}
+
+
+	
+
+
+	}
 	void Update()
 	{
+
+
+
+		//Vector3 UpdatedPosision = new Vector3(transform.position.x - Vehicle.transform.position.x, 0f, transform.position.z - Vehicle.transform.position.z);
+		//transform.position = transform.position + UpdatedPosision;
+		//transform.rotation = Vector3.RotateTowards(transform.rotation, Vehicle.transform.rotation, 1f ,1f);
 		if (!playerControllerEnabled)
 		{
+			
 			if (OVRManager.OVRManagerinitialized)
 			{
+				
 				OVRManager.display.RecenteredPose += ResetOrientation;
 
 				if (CameraRig != null)
@@ -219,6 +263,7 @@ public class OVRPlayerController : MonoBehaviour
 					CameraRig.UpdatedAnchors += UpdateTransform;
 				}
 				playerControllerEnabled = true;
+				
 			}
 			else
 				return;
@@ -235,6 +280,7 @@ public class OVRPlayerController : MonoBehaviour
 	{
 		if (useProfileData)
 		{
+			
 			if (InitialPose == null)
 			{
 				// Save the initial pose so it can be recovered if useProfileData
@@ -255,10 +301,12 @@ public class OVRPlayerController : MonoBehaviour
 			{
 				p.y = -(0.5f * Controller.height) + Controller.center.y;
 			}
-			CameraRig.transform.localPosition = p;
+			CameraRig.transform.localPosition = p; 
 		}
 		else if (InitialPose != null)
 		{
+		
+		
 			// Return to the initial pose if useProfileData was turned off at runtime
 			CameraRig.transform.localPosition = InitialPose.Value.position;
 			CameraRig.transform.localRotation = InitialPose.Value.orientation;
@@ -309,7 +357,8 @@ public class OVRPlayerController : MonoBehaviour
 		Vector3 predictedXZ = Vector3.Scale((Controller.transform.localPosition + moveDirection), new Vector3(1, 0, 1));
 
 		// Move contoller
-		Controller.Move(moveDirection);
+		//transform.position = transform.position + (Vehicle.transform.position - VehiclePreviousLocation).normalized;
+		Controller.Move(moveDirection);//+ (Vehicle.transform.position - VehiclePreviousLocation).normalized );
 		Vector3 actualXZ = Vector3.Scale(Controller.transform.localPosition, new Vector3(1, 0, 1));
 
 		if (predictedXZ != actualXZ)
@@ -322,11 +371,14 @@ public class OVRPlayerController : MonoBehaviour
 
 	public virtual void UpdateMovement()
 	{
+		
 		if (HaltUpdateMovement)
 			return;
 
 		if (EnableLinearMovement)
 		{
+			
+
 			bool moveForward = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
 			bool moveLeft = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
 			bool moveRight = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
@@ -370,7 +422,7 @@ public class OVRPlayerController : MonoBehaviour
 			Vector3 ortEuler = ort.eulerAngles;
 			ortEuler.z = ortEuler.x = 0f;
 			ort = Quaternion.Euler(ortEuler);
-
+			
 			if (moveForward)
 				MoveThrottle += ort * (transform.lossyScale.z * moveInfluence * Vector3.forward);
 			if (moveBack)
@@ -391,26 +443,35 @@ public class OVRPlayerController : MonoBehaviour
 			Vector2 primaryAxis = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
 
 			// If speed quantization is enabled, adjust the input to the number of fixed speed steps.
-			if (FixedSpeedSteps > 0)
-			{
-				primaryAxis.y = Mathf.Round(primaryAxis.y * FixedSpeedSteps) / FixedSpeedSteps;
-				primaryAxis.x = Mathf.Round(primaryAxis.x * FixedSpeedSteps) / FixedSpeedSteps;
-			}
+			//This is where movement hanppens. 
 
-			if (primaryAxis.y > 0.0f)
-				MoveThrottle += ort * (primaryAxis.y * transform.lossyScale.z * moveInfluence * Vector3.forward);
+				if (FixedSpeedSteps > 0)
+				{
+					primaryAxis.y = Mathf.Round(primaryAxis.y * FixedSpeedSteps) / FixedSpeedSteps;
+					primaryAxis.x = Mathf.Round(primaryAxis.x * FixedSpeedSteps) / FixedSpeedSteps;
 
-			if (primaryAxis.y < 0.0f)
-				MoveThrottle += ort * (Mathf.Abs(primaryAxis.y) * transform.lossyScale.z * moveInfluence *
-									   BackAndSideDampen * Vector3.back);
+				}
 
-			if (primaryAxis.x < 0.0f)
-				MoveThrottle += ort * (Mathf.Abs(primaryAxis.x) * transform.lossyScale.x * moveInfluence *
-									   BackAndSideDampen * Vector3.left);
+				if (primaryAxis.y > 0.0f)
+				{
+					Debug.Log("HELLO");
+					MoveThrottle += ort * (primaryAxis.y* transform.lossyScale.z * moveInfluence * Vector3.forward);
+					//transform.position = Vehicle.transform.position;
+					
+				}
 
-			if (primaryAxis.x > 0.0f)
-				MoveThrottle += ort * (primaryAxis.x * transform.lossyScale.x * moveInfluence * BackAndSideDampen *
-									   Vector3.right);
+				if (primaryAxis.y < 0.0f)
+					MoveThrottle += ort * (Mathf.Abs(primaryAxis.y) * transform.lossyScale.z * moveInfluence *
+										   BackAndSideDampen * Vector3.back);
+
+				if (primaryAxis.x < 0.0f)
+					MoveThrottle += ort * (Mathf.Abs(primaryAxis.x) * transform.lossyScale.x * moveInfluence *
+										   BackAndSideDampen * Vector3.left);
+
+				if (primaryAxis.x > 0.0f)
+					MoveThrottle += ort * (primaryAxis.x * transform.lossyScale.x * moveInfluence * BackAndSideDampen *
+										   Vector3.right);
+			
 		}
 
 		if (EnableRotation)
@@ -497,6 +558,8 @@ public class OVRPlayerController : MonoBehaviour
 	/// </summary>
 	public void UpdateTransform(OVRCameraRig rig)
 	{
+		
+		
 		Transform root = CameraRig.trackingSpace;
 		Transform centerEye = CameraRig.centerEyeAnchor;
 
@@ -514,8 +577,9 @@ public class OVRPlayerController : MonoBehaviour
 		UpdateController();
 		if (TransformUpdated != null)
 		{
-			TransformUpdated(root);
-		}
+		TransformUpdated(root);
+		} 
+		
 	}
 
 	/// <summary>
