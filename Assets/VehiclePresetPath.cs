@@ -134,7 +134,7 @@ public class VehiclePresetPath : MonoBehaviour
 
 
 
-        if (distance > 5f)
+        if (distance > 6f)
         {
 
             rb.MovePosition(rb.transform.position + PositionOffset.normalized * speed * Time.fixedDeltaTime);
