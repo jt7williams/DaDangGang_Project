@@ -11,7 +11,11 @@ public class gameController : MonoBehaviour
     public GameObject kbmCam;
 
     public TextMeshProUGUI healthText;
-    private float currHealth = 100f;
+    public TextMeshProUGUI ammoCounter;
+    public float currHealth = 100f;
+    private int maxAmmo = 30;
+
+    //private GunScript gun;
 
     private void Start()
     {
@@ -26,9 +30,23 @@ public class gameController : MonoBehaviour
             kbmCam.SetActive(true);
         }
         currHealth = 100f;
+        ammoCounter.text = "Ammo: " + maxAmmo.ToString() + "/30";
         healthText.color = new Color(0, 255, 0);
     }
 
+    public void updateAmmoCount(int ammo)
+    {
+        ammoCounter.color = new Color(255, 255, 255);
+        ammoCounter.text = "Ammo: " + ammo.ToString() + "/30";   
+    }
+
+    public void reloadText()
+    {
+    
+     ammoCounter.color = new Color(255, 0, 0);
+     ammoCounter.text = "RELOADING";
+
+    }
 
     public void updateHealth(float damage)
     {

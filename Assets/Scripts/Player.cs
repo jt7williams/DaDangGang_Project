@@ -21,14 +21,14 @@ public class Player : MonoBehaviour {
 
     public bool leftClick;
     public bool rightClick;
+    //private gameController gameController;
+    public playerStats stats;
+    private float playerHealth;
 
-    private float playerHealth = 100f;
-    private gameController gameController;
-
-    void Awake()
-    {
-        gameController = GameObject.FindObjectOfType<gameController>();
-    }
+    //void Awake()
+    //{
+    //    gameController = GameObject.FindObjectOfType<gameController>();
+    //}
 
     void Start() {
         //camera = GetComponent<Camera>();
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour {
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        playerHealth = 100f;
+        playerHealth = stats.currentHealth;
     }
 
     void Update() {
@@ -47,10 +47,10 @@ public class Player : MonoBehaviour {
         }
         //Preview(selection, target);
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            takePlayerDMG(10f);
-        }
+        //if (Input.GetKeyDown(KeyCode.F))
+        //{
+        //    takePlayerDMG(10f);
+        //}
 
         leftClick = Input.GetMouseButtonDown(2); // TODO: rename to middleClick
         rightClick = Input.GetMouseButtonDown(1);
@@ -132,19 +132,4 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void takePlayerDMG(float damage)
-    {
-        if(playerHealth > 0) { 
-            gameController.updateHealth(damage);
-            playerHealth -= damage;
-        } else
-        {
-            die();
-        }
-    }
-
-    public void die()
-    {
-        Debug.Log("YOU ARE DEAD");
-    }
 }
