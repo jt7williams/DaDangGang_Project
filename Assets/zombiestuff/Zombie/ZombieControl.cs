@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class ZombieControl : MonoBehaviour
 {
-	
+	public AudioSource[] ZombieSounds;
 	public NavMeshAgent agent;
 	private Transform targetThis;
 	private Transform player;
@@ -79,16 +79,26 @@ public class ZombieControl : MonoBehaviour
 		}
         Spawn();
     }
-	
 	private void Spawn()
 	{
+
+
+
 		agent = GetComponent<NavMeshAgent>();
 		initialRot = torso.transform.rotation;
 		TurnOffRagdoll();
 	}
 	
+	void Update()
+    {
+		int zrandom = (int)Random.Range(0, 10500);
+		if (zrandom >= 0 && zrandom <= 9)
+			ZombieSounds[zrandom].PlayOneShot(ZombieSounds[zrandom].GetComponent<AudioSource>().clip, 0.9f);
+	}
 	private void FixedUpdate()
 	{
+
+
 		playerIsVisible = Physics.CheckSphere(transform.position, moveRange, isPlayer);
 		playerIsTarget = Physics.CheckSphere(transform.position, meleeRange, isPlayer);
 		
