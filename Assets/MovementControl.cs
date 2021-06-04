@@ -29,9 +29,15 @@ public class MovementControl : MonoBehaviour
 	
 	public float mouseSens = 50f;
 	float xRot = 0f;
-	
-    // Start is called before the first frame update
-    void Start()
+
+	public bool OnVehicle;
+	public GameObject Vehicle;
+	private Vector3 VehiclePreviousLocation;
+	private Quaternion VehiclePreviousRotation;
+	public bool OnVehicleUpdateRotation;
+
+	// Start is called before the first frame update
+	void Start()
     {
 		Cursor.lockState = CursorLockMode.Locked; //locks cursor to center, hides it i think
 		
@@ -41,9 +47,18 @@ public class MovementControl : MonoBehaviour
         jump = false;
         jumpTimer = 0;
         jumpMax = 0.25f;
+
+		OnVehicle = false;
+		VehiclePreviousLocation = Vehicle.transform.position;
+		OnVehicleUpdateRotation = false;
+}
+
+    private void FixedUpdate()
+    {
+        VehicleMove();
     }
-	
-	void Update()
+
+    void Update()
 	{
         float mouseX = Input.GetAxis("Mouse X") * mouseSens * Time.deltaTime; 
 		float mouseY = Input.GetAxis("Mouse Y") * mouseSens * Time.deltaTime;
@@ -120,4 +135,23 @@ public class MovementControl : MonoBehaviour
 		return null;
 	}
 
+	void VehicleMove()
+    {
+		if (OnVehicle) //If on moving vehicle update transform according to vehicle displacement.. 
+		{
+			Vector3 difference = Vehicle.transform.position - VehiclePreviousLocation;
+			float angleDifference = Vehicle.transform.rotation.eulerAngles.y - VehiclePreviousRotation.eulerAngles.y;
+
+			transform.position = transform.position + difference;
+
+			//Updating the moving vehicle change in rotation orientation will cause motion sickness. Can be lessen by decreaseing vehicle rotation speed or increaseing vehicle rotation. 
+			if (OnVehicleUpdateRotation)
+			{
+				transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + angleDifference, transform.localEulerAngles.z);
+			}
+
+			VehiclePreviousLocation = Vehicle.transform.position;
+			VehiclePreviousRotation = Vehicle.transform.rotation;
+		}
+	}
 }

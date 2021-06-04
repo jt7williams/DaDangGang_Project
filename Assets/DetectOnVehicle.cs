@@ -7,6 +7,8 @@ public class DetectOnVehicle : MonoBehaviour
     public VehiclePresetPath vehicle;
     public OVRPlayerController vrPlayer;
     public float defaultSpeed = 5F;
+
+    public MovementControl pcPlayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +28,10 @@ public class DetectOnVehicle : MonoBehaviour
         {
             vrPlayer.OnVehicle = true;
             vehicle.VehicleSpeed = defaultSpeed;
+
+            //pcplayer.transform.SetParent(vehicle.gameObject.transform);
+            pcPlayer.OnVehicle = true;
+            Debug.Log("OnVehicle Player Enter");
         }
     }
 
@@ -35,6 +41,9 @@ public class DetectOnVehicle : MonoBehaviour
         {
             vrPlayer.OnVehicle = false;
             vehicle.VehicleSpeed = 0F;
+
+            pcPlayer.OnVehicle = false;
+            Debug.Log("OnVehicle PLayer Exit");
         }
     }
 }

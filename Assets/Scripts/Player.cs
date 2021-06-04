@@ -45,6 +45,12 @@ public class Player : MonoBehaviour {
             selection = inventory.structures[0];
             //Instantiate(selection, this.transform.position, Quaternion.identity);
         }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            selection = null; //inventory.structures[0];
+            Destroy(preview);
+            //Instantiate(selection, this.transform.position, Quaternion.identity);
+        }
         //Preview(selection, target);
 
         //if (Input.GetKeyDown(KeyCode.F))
