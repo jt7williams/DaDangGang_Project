@@ -70,7 +70,7 @@ public class VehiclePresetPath : MonoBehaviour
             wheels[i].brakeTorque = 5000F;
             wheels[i].motorTorque = 15000f;
         }
-
+        speed = 0;
     }
 
     void Update() 

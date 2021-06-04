@@ -144,7 +144,7 @@ public class ZombieControl : MonoBehaviour
 			if (!playerIsVisible && !playerIsTarget)
 			{
 				//Debug.Log("not moving");
-				agent.speed = 3.0f;
+				agent.speed = 6.0f;
 				movementControl.SetFloat("speed", Random.Range(0.3f, 0.5f));
 				Patrol();
 			}
@@ -153,7 +153,7 @@ public class ZombieControl : MonoBehaviour
 				Pursue();
 				//Debug.Log("moving");
 				//TorsoLook();
-				agent.speed = 4.5f;
+				agent.speed = 7.0f;
 				movementControl.SetFloat("speed", Random.Range(0.7f, 1.3f));
 				movementControl.SetFloat("attack", 0.0f);
 			}
@@ -162,7 +162,7 @@ public class ZombieControl : MonoBehaviour
 				Attack();
 				//Debug.Log("attack");
 				//TorsoLook();
-				agent.speed = 6.0f;
+				agent.speed = 10.0f;
 				
 			}
 		}
