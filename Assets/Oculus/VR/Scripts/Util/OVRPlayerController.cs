@@ -169,7 +169,9 @@ public class OVRPlayerController : MonoBehaviour
 	private bool ReadyToSnapTurn; // Set to true when a snap turn has occurred, code requires one frame of centered thumbstick to enable another snap turn.
 	private bool playerControllerEnabled = false;
 
-    
+	private RaycastHit PreviousHit;
+
+
 
 	void Start()
 	{
@@ -222,24 +224,26 @@ public class OVRPlayerController : MonoBehaviour
 	}
 	void FixedUpdate()
     {
+
+
 		if (OnVehicle) //If on moving vehicle update transform according to vehicle displacement.. 
 		{
 			Vector3 difference = Vehicle.transform.position - VehiclePreviousLocation;
 			float angleDifference = Vehicle.transform.rotation.eulerAngles.y - VehiclePreviousRotation.eulerAngles.y;
 
-			transform.position = transform.position + difference;
+			transform.position = transform.position + difference ;
 
 			//Updating the moving vehicle change in rotation orientation will cause motion sickness. Can be lessen by decreaseing vehicle rotation speed or increaseing vehicle rotation. 
 			if (OnVehicleUpdateRotation)
 			{
-				transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,transform.localEulerAngles.y + angleDifference, transform.localEulerAngles.z);
+				//transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,transform.localEulerAngles.y + angleDifference, transform.localEulerAngles.z);
 			}
 
 			VehiclePreviousLocation = Vehicle.transform.position;
 			VehiclePreviousRotation = Vehicle.transform.rotation;
 		}
 
-
+			
 	
 
 

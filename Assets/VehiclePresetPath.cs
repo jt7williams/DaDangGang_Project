@@ -21,6 +21,7 @@ public class VehiclePresetPath : MonoBehaviour
 	public GameObject player;
 	public GameObject vrCam;
     public GameObject kbmCam;
+    public bool canMove = true;
 
     public WheelCollider[] wheels;
     private float turnSpeed = 30;
@@ -56,17 +57,20 @@ public class VehiclePresetPath : MonoBehaviour
             waypoints[cnt].transform.position = pos;
 
         }
-            currWaypoint = 0;
+        Vector3 poslast = waypoints[waypoints.Length - 1].transform.position;
+        poslast.y = Terrain.activeTerrain.SampleHeight(waypoints[waypoints.Length - 1].transform.position) + 3.8f;
+        waypoints[waypoints.Length - 1].transform.position = poslast;
+        currWaypoint = 0;
 
         //speed = 10f;
 
         rb = GetComponent<Rigidbody>();
         for (int i = 0; i < 4; ++i)
         {
-          wheels[i].brakeTorque = 5000F * 0.1F;
-
-
+            wheels[i].brakeTorque = 5000F;
+            wheels[i].motorTorque = 15000f;
         }
+
     }
 
     void Update() 
@@ -75,7 +79,8 @@ public class VehiclePresetPath : MonoBehaviour
     }
     void FixedUpdate()
     {
-		bool canMove = true;/*
+		//bool canMove = true;
+        /*
 		//player distance check
 		float distance = Vector3.Distance (player.transform.position, this.transform.position);
 		if (distance > 14)
@@ -98,11 +103,19 @@ public class VehiclePresetPath : MonoBehaviour
 		
 		if (canMove)
 		{
-			//When the vehicle hits a steep incline then increase the speed by 5f. 
-			if (transform.eulerAngles.x > 300f && transform.eulerAngles.x < 350f)
+            for (int i = 0; i < 4; ++i)
+            {
+                //wheels[i].brakeTorque = 5000F * 0.1F;
+                wheels[i].motorTorque = 1000f;
+
+
+            }
+
+            //When the vehicle hits a steep incline then increase the speed by 5f. 
+            if (transform.eulerAngles.x > 300f && transform.eulerAngles.x < 350f)
 			{
 				Debug.Log("increasing speed.\n");
-				speed = VehicleSpeed + 5f;
+				speed = VehicleSpeed + 10f;
 			}
 			else
 				speed = VehicleSpeed;
@@ -150,12 +163,20 @@ public class VehiclePresetPath : MonoBehaviour
 
         Vector3 PositionOffset = new Vector3(StraightPath.x, 0f, StraightPath.z);
 
-        
+        if (currWaypoint > 0)
+        {
+            wheels[1].steerAngle = Quaternion.RotateTowards(transform.rotation, waypoints[currWaypoint - 1].transform.rotation, turnSpeed).y;
+            wheels[2].steerAngle = Quaternion.RotateTowards(transform.rotation, waypoints[currWaypoint - 1].transform.rotation, turnSpeed).y;
+        }
+
         if (distance < 5f)
         {
             
             if ((transform.rotation.y < wpts.transform.rotation.y - .01f) || (transform.rotation.y > wpts.transform.rotation.y + 0.01f)) {
+               
                 rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, wpts.transform.rotation, turnSpeed * Time.fixedDeltaTime));
+              
+
             }
 
         }
@@ -166,7 +187,9 @@ public class VehiclePresetPath : MonoBehaviour
          
                 if ((transform.rotation.y < waypoints[currWaypoint - 1].transform.rotation.y - .01f) || (transform.rotation.y > waypoints[currWaypoint - 1].transform.rotation.y + .01f))
                 {
+                   
                     rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, waypoints[currWaypoint - 1].transform.rotation, turnSpeed * Time.fixedDeltaTime));
+                  
                 }
                 
             }
