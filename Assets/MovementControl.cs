@@ -81,7 +81,7 @@ public class MovementControl : MonoBehaviour
 		{
 			Vector3 jumpPower = new Vector3(0.0f, 2.0f, 0.0f);
 			
-			rigidBody.AddForce(jumpPower * 70f);
+			rigidBody.AddForce(jumpPower * 60f);
 			onGround = false;
 		}
 		
