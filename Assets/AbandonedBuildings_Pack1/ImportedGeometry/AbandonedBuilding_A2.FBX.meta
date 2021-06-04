@@ -1,0 +1,195 @@
+fileFormatVersion: 2
+guid: 41929f36ab16c4d43a72452faf4c4d92
+timeCreated: 1600632800
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: ConcreteBars
+    100004: CorrugatedIron_Clean
+    100006: CorrugatedIron_Dirty
+    100008: CorrugatedIron_Rusty
+    100010: Door1
+    100012: Door2
+    100014: Door3
+    100016: DoorAndWindowLintels
+    100018: DoorFrames
+    100020: ExteriorWalls
+    100022: FloorPlanks_Room1
+    100024: FloorPlanks_Room2
+    100026: FloorPlanks_Room3
+    100028: InteriorWalls_room1
+    100030: InteriorWalls_room2
+    100032: InteriorWalls_room3
+    100034: SmallBricks_exterior
+    100036: SmallBricks_interior
+    100038: WindowBars
+    100040: Windowframes_Metal
+    100042: WoodBeams_1
+    100044: WoodBeams_2
+    100046: WoodBeams_3
+    400000: //RootNode
+    400002: ConcreteBars
+    400004: CorrugatedIron_Clean
+    400006: CorrugatedIron_Dirty
+    400008: CorrugatedIron_Rusty
+    400010: Door1
+    400012: Door2
+    400014: Door3
+    400016: DoorAndWindowLintels
+    400018: DoorFrames
+    400020: ExteriorWalls
+    400022: FloorPlanks_Room1
+    400024: FloorPlanks_Room2
+    400026: FloorPlanks_Room3
+    400028: InteriorWalls_room1
+    400030: InteriorWalls_room2
+    400032: InteriorWalls_room3
+    400034: SmallBricks_exterior
+    400036: SmallBricks_interior
+    400038: WindowBars
+    400040: Windowframes_Metal
+    400042: WoodBeams_1
+    400044: WoodBeams_2
+    400046: WoodBeams_3
+    2300000: ConcreteBars
+    2300002: CorrugatedIron_Clean
+    2300004: CorrugatedIron_Dirty
+    2300006: CorrugatedIron_Rusty
+    2300008: Door1
+    2300010: Door2
+    2300012: Door3
+    2300014: DoorAndWindowLintels
+    2300016: DoorFrames
+    2300018: ExteriorWalls
+    2300020: FloorPlanks_Room1
+    2300022: FloorPlanks_Room2
+    2300024: FloorPlanks_Room3
+    2300026: InteriorWalls_room1
+    2300028: InteriorWalls_room2
+    2300030: InteriorWalls_room3
+    2300032: SmallBricks_exterior
+    2300034: SmallBricks_interior
+    2300036: WindowBars
+    2300038: Windowframes_Metal
+    2300040: WoodBeams_1
+    2300042: WoodBeams_2
+    2300044: WoodBeams_3
+    3300000: ConcreteBars
+    3300002: CorrugatedIron_Clean
+    3300004: CorrugatedIron_Dirty
+    3300006: CorrugatedIron_Rusty
+    3300008: Door1
+    3300010: Door2
+    3300012: Door3
+    3300014: DoorAndWindowLintels
+    3300016: DoorFrames
+    3300018: ExteriorWalls
+    3300020: FloorPlanks_Room1
+    3300022: FloorPlanks_Room2
+    3300024: FloorPlanks_Room3
+    3300026: InteriorWalls_room1
+    3300028: InteriorWalls_room2
+    3300030: InteriorWalls_room3
+    3300032: SmallBricks_exterior
+    3300034: SmallBricks_interior
+    3300036: WindowBars
+    3300038: Windowframes_Metal
+    3300040: WoodBeams_1
+    3300042: WoodBeams_2
+    3300044: WoodBeams_3
+    4300000: Door1
+    4300002: DoorFrames
+    4300004: ExteriorWalls
+    4300006: ConcreteBars
+    4300008: Door3
+    4300010: FloorPlanks_Room3
+    4300012: WoodBeams_3
+    4300014: WoodBeams_1
+    4300016: DoorAndWindowLintels
+    4300018: SmallBricks_exterior
+    4300020: WoodBeams_2
+    4300022: Door2
+    4300024: InteriorWalls_room3
+    4300026: SmallBricks_interior
+    4300028: FloorPlanks_Room1
+    4300030: FloorPlanks_Room2
+    4300032: InteriorWalls_room2
+    4300034: InteriorWalls_room1
+    4300036: WindowBars
+    4300038: Windowframes_Metal
+    4300040: CorrugatedIron_Clean
+    4300042: CorrugatedIron_Rusty
+    4300044: CorrugatedIron_Dirty
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
