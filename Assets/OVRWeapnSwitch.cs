@@ -12,6 +12,7 @@ public class OVRWeapnSwitch : MonoBehaviour
     public GameObject LHandProp;
     public GameObject Lhand;
     int iterate = 0;
+    public gameController gameCon;
     void Start()
     {
         LHandProp.GetComponent<Collider>().enabled = false;
@@ -43,6 +44,7 @@ public class OVRWeapnSwitch : MonoBehaviour
                     _m4.SetActive(true);
                     _Skorpion.SetActive(false);
                     _ak.SetActive(false);
+                    gameCon.updateAmmoCount(_m4.GetComponent<OVRGunScript>().ammoCount);
                     break;
                 case 2:
                     //Code for swithcing to the SKORPTION WEAPON
@@ -52,6 +54,7 @@ public class OVRWeapnSwitch : MonoBehaviour
                     _m4.SetActive(false);
                     _Skorpion.SetActive(true);
                     _ak.SetActive(false);
+                    gameCon.updateAmmoCount(_Skorpion.GetComponent<OVRGunScript>().ammoCount);
                     break;
                 case 3:
                     //Code for switching to AK WEAPON
@@ -61,6 +64,7 @@ public class OVRWeapnSwitch : MonoBehaviour
                     _m4.SetActive(false);
                     _Skorpion.SetActive(false);
                     _ak.SetActive(true);
+                    gameCon.updateAmmoCount(_ak.GetComponent<OVRGunScript>().ammoCount);
                     break;
 
                 default:

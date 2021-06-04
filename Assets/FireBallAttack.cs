@@ -6,7 +6,8 @@ public class FireBallAttack : MonoBehaviour
 {
     public GameObject player;
     public GameObject colliderToSpawn;
-    public int numHits = 0;
+    public float fireDamage = 1;
+    public playerStats pStats;
     private ParticleSystem ps;
     // Start is called before the first frame update
     void Start()
@@ -36,10 +37,11 @@ public class FireBallAttack : MonoBehaviour
             // instantiate the Game Object
             GameObject obj = Instantiate(colliderToSpawn, p.position, Quaternion.identity);
             obj.SetActive(true);
+            pStats.takePlayerDMG(fireDamage);
             enter[i] = p;
         }
 
-        numHits += numEnter;
+        
         // set
         ps.SetTriggerParticles(ParticleSystemTriggerEventType.Enter, enter);
     }
