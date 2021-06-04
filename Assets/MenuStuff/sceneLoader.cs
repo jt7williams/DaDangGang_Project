@@ -11,7 +11,7 @@ public class sceneLoader : MonoBehaviour
 	private float targetAlpha;
 	public float FadeRate;
 	
-	private bool startedLoading;
+	private bool startedLoading = true;
 	
     public void LoadGame()
     {

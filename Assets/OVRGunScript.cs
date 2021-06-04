@@ -182,6 +182,12 @@ public class OVRGunScript : MonoBehaviour
                 tgt.damageTake(damage);
             }
 
+            zombieHealth chesttgt = hitInfo.transform.GetComponent<zombieHealth>();
+            if (chesttgt != null)
+            {
+                chesttgt.damageTake(damage);
+            }
+
             hitEffect.transform.position = hitInfo.point;
             hitEffect.transform.forward = hitInfo.normal;
             hitEffect.Emit(1);

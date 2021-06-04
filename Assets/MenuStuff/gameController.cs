@@ -26,12 +26,11 @@ public class gameController : MonoBehaviour
 	
     //private GunScript gun;
     public playerStats pStats;
-    public TextMeshProUGUI healthTextTank;
-    public float currTankHealth = 1000f;
 
     public TextMeshProUGUI VRhealthText;
     public TextMeshProUGUI VRammoCounter;
     public TextMeshProUGUI VRhealthTextTank;
+    public TextMeshProUGUI VRscoreText;
 
     private void Start()
     {
@@ -41,6 +40,8 @@ public class gameController : MonoBehaviour
             kbmCam.SetActive(false);
             healthText = VRhealthText;
             ammoCounter = VRammoCounter;
+            healthTextTank = VRhealthTextTank;
+            scoreText = VRscoreText;
         }
         else if (StateNameController.camNumber == 2)
         {
@@ -105,24 +106,10 @@ public class gameController : MonoBehaviour
         }
 
     }
-	
-    public void updateTankHealth(float damage)
+
+    public void addToScore()
     {
-        if(currTankHealth > 0f) { 
-            currTankHealth -= damage;
-            healthTextTank.text = "Tank Health: " + currTankHealth.ToString();
-        } 
-        if(currTankHealth <= 0f)
-        {
-            healthTextTank.color = new Color(255,0,0);
-            healthTextTank.text = "THE TANK DIED";
-        }
-        
+        score = score + 10;
+        scoreText.text = "Points: " + score.ToString();
     }
-	
-	public void addToScore()
-	{
-		score = score + 10;
-		scoreText.text = "Points: " + score.ToString();
-	}
 }

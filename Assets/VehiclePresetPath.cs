@@ -75,7 +75,7 @@ public class VehiclePresetPath : MonoBehaviour
     }
     void FixedUpdate()
     {
-		bool canMove = false;
+		bool canMove = true;/*
 		//player distance check
 		float distance = Vector3.Distance (player.transform.position, this.transform.position);
 		if (distance > 14)
@@ -93,7 +93,7 @@ public class VehiclePresetPath : MonoBehaviour
 			VehicleAnim2.SetBool("Moving", true);
 			VehicleAnim3.SetBool("Moving", true);
 			VehicleAnim4.SetBool("Moving", true);
-		}
+		}*/
 		//Debug.Log(distance);
 		
 		if (canMove)
