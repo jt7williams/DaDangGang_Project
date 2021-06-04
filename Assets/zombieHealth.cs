@@ -3,23 +3,19 @@ using UnityEngine;
 public class zombieHealth : MonoBehaviour
 {
     public float mainhealth = 100f;
-	public GameObject flesh;
-	public GameObject dependency;
 	public GameObject collider;
-	public GameObject zombie;
-	public GameObject removable;
+	public int isalive = 1;
 	
-	public GameObject splat;
+	public gameController thisScore;
 	
-	int isalive = 1;
     public void damageTake(float amt){
-		if (dependency == null) 
 		{
 			if (isalive == 1)
 			{
 				mainhealth -= amt;
 				if(mainhealth <= 0f){
 					dead();
+					isalive = 0;
 				}
 			}
 		}
@@ -27,6 +23,7 @@ public class zombieHealth : MonoBehaviour
 
     void dead()
 	{
-
+		thisScore.addToScore();
+		
     }
 }

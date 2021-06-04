@@ -11,10 +11,19 @@ public class gameController : MonoBehaviour
     public GameObject kbmCam;
 
     public TextMeshProUGUI healthText;
+	
+	
     public TextMeshProUGUI ammoCounter;
     public float currHealth = 100f;
-    private int maxAmmo = 30;
-
+    
+	private int maxAmmo = 30;
+	
+	public TextMeshProUGUI healthTextTank;
+	public float currTankHealth = 1000f;
+	
+	public int score;
+	public TextMeshProUGUI scoreText;
+	
     //private GunScript gun;
 
     private void Start()
@@ -61,4 +70,24 @@ public class gameController : MonoBehaviour
         }
         
     }
+	
+    public void updateTankHealth(float damage)
+    {
+        if(currTankHealth > 0f) { 
+            currTankHealth -= damage;
+            healthTextTank.text = "Tank Health: " + currTankHealth.ToString();
+        } 
+        if(currTankHealth <= 0f)
+        {
+            healthTextTank.color = new Color(255,0,0);
+            healthTextTank.text = "THE TANK DIED";
+        }
+        
+    }
+	
+	public void addToScore()
+	{
+		score = score + 10;
+		scoreText.text = "Points: " + score.ToString();
+	}
 }

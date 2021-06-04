@@ -8,9 +8,14 @@ public class ZombieControl : MonoBehaviour
 {
 	
 	public NavMeshAgent agent;
+	private Transform targetThis;
 	private Transform player;
+	
+	private Transform targetCam;
+	public Transform vehicle;
     //playerstats object to affect player health
     public playerStats target;
+	public VehiclePresetPath spde;
 
     [SerializeField] float damage;
     float lastAttack = 0;
@@ -32,7 +37,7 @@ public class ZombieControl : MonoBehaviour
 	
 	//limb essentials
 	public GameObject head;
-	bool isDead = false;
+	public bool isDead = false;
 	public GameObject mainTarget;
 	
 	//animations
@@ -62,15 +67,15 @@ public class ZombieControl : MonoBehaviour
 		attackMode = false;
         if (StateNameController.camNumber == 1)
         {
-            player = vrCam;
+			targetCam = vrCam;
         }
         else if (StateNameController.camNumber == 2)
         {
-            player = kbmCam;
+			targetCam = kbmCam;
         }
 		else 
 		{
-			player = kbmCam;
+			targetCam = kbmCam;
 		}
         Spawn();
     }
@@ -95,7 +100,7 @@ public class ZombieControl : MonoBehaviour
 				isDead = true;
 				movementControl.enabled = false;
 				ActivateRagdoll();
-				Destroy(this.gameObject, 10.0f);
+				Destroy(this.gameObject, 6.0f);
 			}
 		}
 		if ((head == null))// || 
@@ -107,12 +112,24 @@ public class ZombieControl : MonoBehaviour
 				movementControl.enabled = false;
 				ActivateRagdoll();
 				//kill momentum here
-				Destroy(this.gameObject, 10.0f);
+				Destroy(this.gameObject, 6.0f);
 			}
 		}
 		
 		if (isDead == false)
 		{
+			float vehicleDist = Vector3.Distance (transform.position, vehicle.position);
+			float playerDist = Vector3.Distance (transform.position, targetCam.position);
+			
+			
+			if (vehicleDist < playerDist)
+			{
+				player = vehicle;
+			}
+			else 
+			{
+				player = targetCam;
+			}
 			
 			if (!playerIsVisible && !playerIsTarget)
 			{
@@ -136,8 +153,7 @@ public class ZombieControl : MonoBehaviour
 				//Debug.Log("attack");
 				//TorsoLook();
 				agent.speed = 6.0f;
-				movementControl.SetFloat("speed", Random.Range(1.1f, 1.45f));
-				movementControl.SetFloat("attack", 2.0f);
+				
 			}
 		}
 		
@@ -179,25 +195,49 @@ public class ZombieControl : MonoBehaviour
 	{
 		attackMode = true;
 		agent.SetDestination(player.position);
+		TorsoLook();
 	}
 	
 	private void BeginAttack()
 	{
 		Attack();
-		
+		TorsoLook();
 	}
-	
 	
 	private void Attack()
 	{
 		if (!hasAttacked && Time.time - lastAttack >= attackCooldown)
 		{
 			hasAttacked = true;
-            lastAttack = Time.time;
+			lastAttack = Time.time;
+			StartCoroutine(ProcessAttack());
 			Invoke(nameof(EndAttack), attackDebounce);
-            target.takePlayerDMG(5f);
-            
 		}
+	}
+	
+	IEnumerator ProcessAttack()
+	{
+		movementControl.SetFloat("speed", Random.Range(1.1f, 1.45f));
+		movementControl.SetFloat("attack", 2.0f);
+		yield return new WaitForSeconds(0.25f);
+
+
+		
+		float vehicleDist = Vector3.Distance (transform.position, vehicle.position);
+		float playerDist = Vector3.Distance (transform.position, targetCam.position);
+		
+		
+		if (vehicleDist < playerDist)
+		{
+			target.takeTankDmg(2f);
+			//spde.VehicleSpeed = -1;
+		}
+		else 
+		{
+			target.takePlayerDMG(2f);
+		}
+		
+		
 	}
 	
 	private void EndAttack()
@@ -208,7 +248,7 @@ public class ZombieControl : MonoBehaviour
 	private void TorsoLook()
 	{
 		Quaternion lookRot = Quaternion.LookRotation(player.position - torso.transform.position);
-		torso.transform.rotation = lookRot;
+		transform.rotation = lookRot;
 	}
 	
 	private void TurnOffRagdoll()
@@ -223,12 +263,14 @@ public class ZombieControl : MonoBehaviour
 	{
 		//CapsuleCollider[] cols = GetComponentsInChildren<CapsuleCollider>();
 		
+		/*
 		foreach (Collider c in RagdollParts)
 		{
 			c.isTrigger = false;
 			//c.attachedRigidbody.WakeUp();
 			//c.attachedRigidbody.detectCollisions = true;
 		}
+		*/
 		
 		/*
 		foreach (Rigidbody r in rigids)

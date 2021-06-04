@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LoadScreen : MonoBehaviour
+public class FadeFromBlack : MonoBehaviour
 {
 	public Image img;
 	private float targetAlpha;
@@ -27,11 +27,11 @@ public class LoadScreen : MonoBehaviour
 	IEnumerator LoadBegin()
 	{
 		{
-			yield return new WaitForSeconds(2);
+			Color curColor = img.color;
+			curColor.a = 1.0f;
+			img.color = curColor;
+			yield return new WaitForSeconds(1);
 			yield return StartCoroutine(FadeToTransparent());
-			yield return new WaitForSeconds(2);
-			yield return StartCoroutine(FadeToBlack());
-			SceneManager.LoadScene("MainMenu");
 		}
 	}
 	

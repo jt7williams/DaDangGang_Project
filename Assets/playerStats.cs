@@ -5,8 +5,12 @@ using UnityEngine;
 public class playerStats : MonoBehaviour
 {
     private gameController gameController;
-    private float maxHealth = 100f;
+    public float maxHealth;
     public float currentHealth;
+	
+	public float maxTankHealth;
+	public float currentTankHealth;
+	
     //private bool isDead = false;
     public GameOver GO_SCREEN;
 
@@ -18,6 +22,21 @@ public class playerStats : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+		currentTankHealth = maxTankHealth;
+    }
+
+    public void takeTankDmg(float damage)
+    {
+        if (currentTankHealth > 0)
+        {
+            //isDead = false;
+            gameController.updateTankHealth(damage);
+            currentTankHealth -= damage;
+        }
+        else
+        {
+            die();
+        }
     }
 
     public void takePlayerDMG(float damage)

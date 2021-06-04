@@ -46,6 +46,7 @@ public class GunScript : MonoBehaviour
 
     public gameController gameCon;
     
+	public GameObject muzFlash;
 
     Vector3 GetPosition(Bullet bullet)
     {
@@ -77,7 +78,7 @@ public class GunScript : MonoBehaviour
         isReloading = false;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (isReloading)
         {
@@ -105,6 +106,7 @@ public class GunScript : MonoBehaviour
 
     IEnumerator Reload()
     {
+		muzFlash.SetActive(false);
         isReloading = true;
         gameCon.reloadText();
         yield return new WaitForSeconds(reloadTime - .25f);
@@ -120,6 +122,7 @@ public class GunScript : MonoBehaviour
     {
         isFiring = true;
         fireBullet();
+		StartCoroutine(flashMuzzle());
     }
 
     public void UpdateBullets(float deltaTime)
@@ -163,6 +166,12 @@ public class GunScript : MonoBehaviour
             {
                 tgt.damageTake(damage);
             }
+			
+			zombieHealth chesttgt = hitInfo.transform.GetComponent<zombieHealth>();
+            if (chesttgt != null)
+            {
+                chesttgt.damageTake(damage);
+            }
 
             hitEffect.transform.position = hitInfo.point;
             hitEffect.transform.forward = hitInfo.normal;
@@ -187,7 +196,9 @@ public class GunScript : MonoBehaviour
     private void fireBullet()
     {
         
+		
         ammoCount--;
+		
         foreach (var particle in muzzleFlash)
         {
             particle.Emit(1);
@@ -199,6 +210,16 @@ public class GunScript : MonoBehaviour
         if (hitInfo.rigidbody != null)
         {
             hitInfo.rigidbody.AddForce(-hitInfo.normal * impactForce);
+			
         }
     }
+	
+	IEnumerator flashMuzzle()
+	{
+		muzFlash.SetActive(true);
+		//muzFlash.transform.localRotation = Quaternion.Euler(Random.Range(-180, 180), -180, 180);
+		//muzFlash.transform.localScale = new Vector3(Random.Range(0.05f, 0.07f), Random.Range(0.05f, 0.07f), Random.Range(0.05f, 0.07f));
+		yield return new WaitForSeconds(0.06f);
+		muzFlash.SetActive(false);
+	}
 }

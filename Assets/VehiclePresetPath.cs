@@ -18,13 +18,35 @@ public class VehiclePresetPath : MonoBehaviour
     public AudioSource TankSound;
     public AudioSource[] TrackSound;
 
+	public GameObject player;
+	public GameObject vrCam;
+    public GameObject kbmCam;
 
     public WheelCollider[] wheels;
     private float turnSpeed = 30;
 
+	public Animator VehicleAnim1;
+	public Animator VehicleAnim2;
+	public Animator VehicleAnim3;
+	public Animator VehicleAnim4;
+
     // Start is called before the first frame update
     void Start()
     {
+		//player select;
+		if (StateNameController.camNumber == 1)
+        {
+            player = vrCam;
+        }
+        else if (StateNameController.camNumber == 2)
+        {
+            player = kbmCam;
+        }
+		else 
+		{
+			player = kbmCam;
+		}
+		
         //Alighn the game objecst so they look at the next;
         for (int cnt = 0; cnt < waypoints.Length - 1; cnt++)
         {
@@ -47,53 +69,75 @@ public class VehiclePresetPath : MonoBehaviour
         }
     }
 
-    void Update() { 
-
-
-
+    void Update() 
+	{
         
     }
     void FixedUpdate()
     {
-        //When the vehicle hits a steep incline then increase the speed by 5f. 
-        if (transform.eulerAngles.x > 300f && transform.eulerAngles.x < 350f)
-        {
-            Debug.Log("increasing speed.\n");
-            speed = VehicleSpeed + 5f;
-        }
-        else
-            speed = VehicleSpeed;
+		bool canMove = false;
+		//player distance check
+		float distance = Vector3.Distance (player.transform.position, this.transform.position);
+		if (distance > 14)
+		{
+			canMove = false;
+			VehicleAnim1.SetBool("Moving", false);
+			VehicleAnim2.SetBool("Moving", false);
+			VehicleAnim3.SetBool("Moving", false);
+			VehicleAnim4.SetBool("Moving", false);
+		}
+		if (distance <= 14)
+		{
+			canMove = true;
+			VehicleAnim1.SetBool("Moving", true);
+			VehicleAnim2.SetBool("Moving", true);
+			VehicleAnim3.SetBool("Moving", true);
+			VehicleAnim4.SetBool("Moving", true);
+		}
+		//Debug.Log(distance);
+		
+		if (canMove)
+		{
+			//When the vehicle hits a steep incline then increase the speed by 5f. 
+			if (transform.eulerAngles.x > 300f && transform.eulerAngles.x < 350f)
+			{
+				Debug.Log("increasing speed.\n");
+				speed = VehicleSpeed + 5f;
+			}
+			else
+				speed = VehicleSpeed;
 
-        turnSpeed = 6 * speed;
-        if (currWaypoint < waypoints.Length)
-        {
-            MoveVehicle(waypoints[currWaypoint]);
+			turnSpeed = 6 * speed;
+			if (currWaypoint < waypoints.Length)
+			{
+				MoveVehicle(waypoints[currWaypoint]);
 
-            //We are moving play sounds
-            if (!TankSound.isPlaying)
-            {
-                TankSound.Play();
-                EngineSound.Play();
+				//We are moving play sounds
+				if (!TankSound.isPlaying)
+				{
+					TankSound.Play();
+					EngineSound.Play();
 
-                TrackSound[0].Play();
-                TrackSound[1].Play();
-                TrackSound[2].Play();
-                TrackSound[3].Play();
-            }
+					TrackSound[0].Play();
+					TrackSound[1].Play();
+					TrackSound[2].Play();
+					TrackSound[3].Play();
+				}
 
 
-        }
-        else {
+			}
+			else {
 
-            TankSound.Pause();
-            EngineSound.Pause();
+				TankSound.Pause();
+				EngineSound.Pause();
 
-            TrackSound[0].Pause();
-            TrackSound[1].Pause();
-            TrackSound[2].Pause();
-            TrackSound[3].Pause();
+				TrackSound[0].Pause();
+				TrackSound[1].Pause();
+				TrackSound[2].Pause();
+				TrackSound[3].Pause();
 
-        }
+			}
+		}
 
 
 

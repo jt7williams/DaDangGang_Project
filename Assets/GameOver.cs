@@ -18,7 +18,8 @@ public class GameOver : MonoBehaviour
 
     public void ReturnToMenu()
     {
-        SceneManager.LoadScene(0);
+		Time.timeScale = 1f;
+        SceneManager.LoadScene(1);
     }
 
     public void QuitGame()

@@ -8,7 +8,6 @@ public class target : MonoBehaviour
 	public GameObject collider;
 	//public GameObject zombie;
 	public GameObject removable;
-	
 	public GameObject splat;
 	
 	int isalive = 1;
@@ -20,6 +19,7 @@ public class target : MonoBehaviour
 				health -= amt;
 				if(health <= 0f){
 					dead();
+					
 				}
 			}
 		}
@@ -42,6 +42,7 @@ public class target : MonoBehaviour
 		{
 			Destroy(collider.GetComponent<Collider>());
 		}
+		Debug.Log("Zombie Died");
 		Destroy(meatFlap, 6.0f);
     }
 }
