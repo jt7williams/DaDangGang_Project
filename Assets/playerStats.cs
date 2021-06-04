@@ -44,8 +44,9 @@ public class playerStats : MonoBehaviour
         if (currentHealth > 0)
         {
             //isDead = false;
-            gameController.updateHealth(damage);
             currentHealth -= damage;
+            gameController.updateHealth();
+            
         }
         else
         {
@@ -60,4 +61,13 @@ public class playerStats : MonoBehaviour
         Debug.Log("YOU ARE DEAD");
     }
 
+    public void heal50()
+    {
+        currentHealth += 50F;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        gameController.updateHealth();
+    }
 }

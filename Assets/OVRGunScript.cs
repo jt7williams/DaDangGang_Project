@@ -25,7 +25,7 @@ public class OVRGunScript : MonoBehaviour
     public int fireRate = 25;
     public float impactForce = 60f;
     public int maxAmmo = 30;
-    private int ammoCount;
+    public int ammoCount;
     private bool isReloading = false;
     public float reloadTime = 1.0f;
 
@@ -52,7 +52,7 @@ public class OVRGunScript : MonoBehaviour
     public AudioSource ShellSound;
     public AudioSource ReloadSound;
 
-
+    public gameController gameCon;
 
     Vector3 GetPosition(Bullet bullet)
     {
@@ -101,6 +101,7 @@ public class OVRGunScript : MonoBehaviour
             nextTTF = Time.time + 1f / fireRate;
             FireSound.PlayOneShot(FireSound.GetComponent<AudioSource>().clip,0.8f);
             StartFiring();
+            gameCon.updateAmmoCount(ammoCount);
             ShellSound.PlayOneShot(ShellSound.GetComponent<AudioSource>().clip, 0.4f);
    
         }
@@ -109,6 +110,7 @@ public class OVRGunScript : MonoBehaviour
             nextTTF = Time.time + 1f / fireRate;
             FireSound.PlayOneShot(FireSound.GetComponent<AudioSource>().clip, 0.8f);
             StartFiring();
+            gameCon.updateAmmoCount(ammoCount);
             ShellSound.PlayOneShot(ShellSound.GetComponent<AudioSource>().clip, 0.4f);
         }
         UpdateBullets(Time.deltaTime);
@@ -122,11 +124,13 @@ public class OVRGunScript : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
+        gameCon.reloadText();
         yield return new WaitForSeconds(reloadTime - .25f);
 
         yield return new WaitForSeconds(.25f);
 
         ammoCount = maxAmmo;
+        gameCon.updateAmmoCount(ammoCount);
         isReloading = false;
     }
 
